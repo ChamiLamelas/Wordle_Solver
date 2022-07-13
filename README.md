@@ -1,1 +1,3 @@
-# Wordle_Solver
+# Wordle Solver
+
+Project for reviewing C++. 
