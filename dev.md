@@ -16,13 +16,19 @@ Class GuessFailureException: Thrown when a guess cannot be made.
 
 Class WordleSolver
 
-int guesses
-BaseRanker* ranker
-string temp_fp
-string PLACEHOLDER
-string prev_guess
-set<int> guessed
-string dataset_fp
+int guesses: Keeps current number of guesses, not used at the moment but may be useful if ranker's Rank() took the current guess number (something to do with duplicates).
+
+BaseRanker* ranker: Pointer to ranker (polymorphism)
+
+string temp_fp: Filepath created by solver during guessing process.
+
+string PLACEHOLDER: placeholder for overloaded Guess. 
+
+string prev_guess: previous guess made by solver, used with feedback to clear out temp_fp.
+
+set<int> guessed: set of indices that have been guessed successfully.
+
+string dataset_fp: filepath to dataset to use for the solver.
 
 WordleSolver(string dataset_fp, BaseRanker* ranker): Initializes a WordleSolver
 
