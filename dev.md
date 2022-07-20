@@ -4,7 +4,7 @@
 
 Interface BaseRanker
 
-virtual int SetUp(string temp_fp): Called before Rank() will be called on each of the remaining options in temp_fp by WordleSolver. This allows the ranker to adjust how ranks are calculated if some of the words have been removed from the dataset based on feedback from previous guesses.
+virtual void SetUp(string temp_fp): Called before Rank() will be called on each of the remaining options in temp_fp by WordleSolver. This allows the ranker to adjust how ranks are calculated if some of the words have been removed from the dataset based on feedback from previous guesses.
 
 virtual int Rank(string word): Given a word, returns a rank for the word.
 
@@ -113,8 +113,9 @@ string GetFeedback(string guess, string word): Get the feedback (represented as 
             feedback[i] = 'y'
     return feedback
 
-int Evaluate(WordleSolver solver, string word): Sees how well a WordleSolver does at guessing a particular word. It will return the number of guesses it takes to guess the word or FAILED (some integer not 1-6 to signify that solver failed to find word).
+int Evaluate(WordleSolver *solver, string word): Sees how well a WordleSolver does at guessing a particular word. It will return the number of guesses it takes to guess the word or FAILED (some integer not 1-6 to signify that solver failed to find word).
 
+    WordleSolver solver(dictionary_fp, ranker)
     string guess{solver.Guess()}
     string feedback
     for i = 1 ... 6
@@ -138,7 +139,7 @@ and failure count and stores them in output parameters (can't return multiple th
     for c in guess_counts
         if c != failed
             dev_sq_sum += pow(c-mean,2)
-    std_dev = sqrt(dev_sq_sum/n)
+    std_dev = sqrt(dev_sq_sum/guess_counts.size())
 
 void EvaluateDataset(vector<string> dictionary_fps, vector<BaseRanker\*> rankers, string_view words_fp, string_view output_fp): Sees how well a variety of rankers does at guessing a bunch of words in a dataset specified by a filename. The output is displayed in some nice table format to an output file. For each BaseRanker, the table will report for a WordleSolver using the BaseRanker the mean number of guesses it took to guess correct words, the standard deviation in that number of guesses, and lastly how many of the words were guessed within 6 guesses. dictionary_fps supply filepaths to the 5 letter words that the solver starts with, words_fp is a list of words to guess.
 
