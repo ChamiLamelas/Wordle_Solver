@@ -9,13 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-
-EvaluationFailureException::EvaluationFailureException(std::string_view r) : reason(r) {}
-
-const char *EvaluationFailureException::what() const throw()
-{
-    return reason.c_str();
-}
+#include "exceptions.h"
 
 std::string GetFeedback(std::string_view guess, std::string_view word)
 {
@@ -92,13 +86,13 @@ void EvaluateDataset(const std::vector<std::string> &dictionary_fps, const std::
     std::ifstream words_file(words_fp, std::ios_base::in);
     if (!words_file.is_open())
     {
-        throw EvaluationFailureException("Could not open words file to read");
+        throw WordleSolverException("Could not open words file to read");
     }
 
     std::ofstream output_file(output_fp, std::ios_base::out);
     if (!output_file.is_open())
     {
-        throw EvaluationFailureException("Could not open output file to write");
+        throw WordleSolverException("Could not open output file to write");
     }
 
     std::vector<std::string> words;
