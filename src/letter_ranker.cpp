@@ -52,7 +52,7 @@ int LetterRanker::Rank(std::string_view word)
     return rank;
 }
 
-std::string Name()
+std::string LetterRanker::Name()
 {
     return "LetterRanker";
 }

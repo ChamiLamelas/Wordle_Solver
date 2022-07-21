@@ -11,7 +11,7 @@ RandomRanker::RandomRanker(unsigned int seed)
     srand(seed);
 }
 
-void RandomRanker::SetUp(const string &temp_fp)
+void RandomRanker::SetUp(const std::string &temp_fp)
 {
 }
 

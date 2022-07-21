@@ -21,14 +21,14 @@ public:
         std::ifstream temp_file_r(self.temp_fp, std::ios_base::in);
         if (!temp_file_r.is_open())
         {
-            throw GuessFailureException("Could not open " + self.temp_fp + " for reading");
+            throw WordleSolverException("Could not open " + self.temp_fp + " for reading");
         }
 
         std::string temp2_fp{InsertFilePathSuffix(self.temp_fp, TEMP_FP_SUFFIX)};
         std::fstream temp2_file_rw(temp2_fp, std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
         if (!temp2_file_rw.is_open())
         {
-            throw GuessFailureException("Could not create or open and clear " + temp2_fp + " for reading or writing");
+            throw WordleSolverException("Could not create or open and clear " + temp2_fp + " for reading or writing");
         }
 
         bool first_word{true};
@@ -57,7 +57,7 @@ public:
         std::ofstream temp_file_w(self.temp_fp, std::ios_base::out | std::ios_base::trunc);
         if (!temp_file_w.is_open())
         {
-            throw GuessFailureException("Could not open " + self.temp_fp + " for writing");
+            throw WordleSolverException("Could not open " + self.temp_fp + " for writing");
         }
 
         temp2_file_rw.clear();
