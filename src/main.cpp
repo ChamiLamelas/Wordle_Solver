@@ -13,6 +13,7 @@ void RunUserMode(std::string_view dictionary_fp, BaseRanker *ranker);
 
 int main()
 {
+    // Test 
     RandomRanker rr(1);
     BaseRanker *rr_ptr{&rr};
     try
