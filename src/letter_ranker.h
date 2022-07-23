@@ -73,6 +73,17 @@ public:
 
 private:
     /*
+    Stores the frequencies of each letter that appears in the eligible words.
+    Assuming only letters a-z, this could be replaced by a length 26 int
+    array. This is updated by SetUp which, as described in WordleSolver,
+    is called before each guess is made so that the ranking map can be
+    updated. Note, the letters that were most frequent in the overall
+    dictionary may not the best most frequent after the dictionary has
+    been reduced via various rounds of feedback.
+     */
+    std::unordered_map<char, int> counts;
+
+    /*
     Stores the rank (1,2,...) of each letter that appears in the eligible words.
     Assuming only letters a-z, this could be replaced by a length 26
     int array. This is updated by SetUp which, as described in WordleSolver,

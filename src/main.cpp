@@ -13,6 +13,7 @@
 #include "exceptions.h"
 #include "letter_ranker.h"
 #include "duplicate_penalty_letter_ranker.h"
+#include "two_letter_ranker.h"
 
 /*
 Runs user mode for user to enter Wordle feedback.
@@ -41,10 +42,12 @@ int main()
     BaseRanker *lr_ptr{&lr};
     DuplicatePenaltyLetterRanker dplr(100);
     BaseRanker *dplr_ptr{&dplr};
+    TwoLetterRanker tlr;
+    BaseRanker *tlr_ptr{&tlr};
 
     try
     {
-        RunUserMode("data/tabatkins_github_words.txt", dplr_ptr);
+        RunUserMode("data/tabatkins_github_words.txt", tlr_ptr);
     }
     catch (const WordleSolverException &e)
     {
@@ -99,18 +102,18 @@ std::string ReadFeedback()
 void RunUserMode(std::string_view dictionary_fp, BaseRanker *ranker)
 {
     WordleSolver solver(dictionary_fp, ranker);
-    std::string guess{solver.Guess()};
+    std::string guess;
     std::string feedback;
-    for (auto num_attempts{1}; num_attempts <= 6; num_attempts++)
+    for (auto num_attempts{0}; num_attempts < 6; num_attempts++)
     {
+        guess = (num_attempts == 0) ? solver.Guess() : solver.Guess(feedback);
         std::cout << "Guess: " << guess << std::endl;
         feedback = ReadFeedback();
         if (feedback == "ggggg")
         {
-            std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts << " attempts." << std::endl;
+            std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts + 1 << " attempts." << std::endl;
             return;
         }
-        guess = solver.Guess(feedback);
     }
     std::cout << "Solver failed to guess the word." << std::endl;
 }
