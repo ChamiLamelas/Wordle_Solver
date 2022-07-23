@@ -4,6 +4,9 @@ Header for WordleSolver.
 This file declares the WordleSolver class which is used to solve the Wordle game
 supplied a dictionary of 5 letter words that is a superset of the wordle words
 and a ranker specified as a subclass of the abstract class BaseRanker.
+
+Author: Chami Lamelas
+Date: Summer 2022
 */
 
 #ifndef SOLVER_H
@@ -32,7 +35,7 @@ public:
 
     Parameters:
         d_fp : Path to dictionary file. Dictionary file should have
-        a 5-letter word set that is a superset of the wordle words. 
+        a 5-letter word set that is a superset of the wordle words.
         Each word should be on a separate line.
 
         r : Pointer to BaseRanker that points to a derived class
@@ -49,7 +52,7 @@ public:
     Makes a guess based on the most recent guess and feedback.
 
     Parameters:
-        feedback: Feedback for the previous output of Guess() in the form of a 5 y's, 
+        feedback: Feedback for the previous output of Guess() in the form of a 5 y's,
         g's, and b's. y represents yellow, g represents green, b represents black.
 
     Returns:
@@ -108,14 +111,15 @@ private:
 
     /*
     Stores a placeholder for feedback (used in the implementation of Guess()).
+    Placeholder of "" is valid as real feedback will never be that.
     */
-    static std::string FEEDBACK_PLACEHOLDER;
+    static const std::string FEEDBACK_PLACEHOLDER;
 
     /*
     Stores the suffix appended to the dictionary filepath before the extension
     for the eligible words file.
     */
-    static std::string ELIGIBLE_FP_SUFFIX;
+    static const std::string ELIGIBLE_FP_SUFFIX;
 };
 
 #endif

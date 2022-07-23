@@ -4,6 +4,9 @@ Header for RandomRanker.
 This file defines the RandomRanker class. This class is a simple
 derived class of BaseRanker. This ranking scheme results in the
 WordleSolver selecting eligible words randomly when guessing.
+
+Author: Chami Lamelas
+Date: Summer 2022
 */
 
 #ifndef RANDOM_RANKER_H

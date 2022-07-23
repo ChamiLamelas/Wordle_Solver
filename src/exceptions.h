@@ -5,6 +5,9 @@ This file holds the definition of WordleSolverException, which
 is the only exception type used by the derived classes of
 BaseRanker, WordleSolver, and the functions of the evaluation
 header.
+
+Author: Chami Lamelas
+Date: Summer 2022
 */
 
 #ifndef EXCEPTIONS_H

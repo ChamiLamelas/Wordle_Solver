@@ -1,6 +1,6 @@
-/*
-Implementation for letter_ranker.h
-*/
+// Implementation for letter_ranker.h
+// Author: Chami Lamelas
+// Date: Summer 2022
 
 #include "letter_ranker.h"
 #include <fstream>

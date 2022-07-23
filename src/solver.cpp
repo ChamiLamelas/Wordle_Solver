@@ -1,4 +1,6 @@
 // Implementation of WordleSolver
+// Author: Chami Lamelas
+// Date: Summer 2022
 
 #include "solver.h"
 #include <fstream>
@@ -232,9 +234,9 @@ public:
     }
 };
 
-// Feedback could never be ""
-std::string WordleSolver::FEEDBACK_PLACEHOLDER = "";
-std::string WordleSolver::ELIGIBLE_FP_SUFFIX = "-temp";
+// Feedback could never be "", also see: https://stackoverflow.com/a/2605559
+const std::string WordleSolver::FEEDBACK_PLACEHOLDER = "";
+const std::string WordleSolver::ELIGIBLE_FP_SUFFIX = "-temp";
 
 WordleSolver::WordleSolver(std::string_view d_fp, BaseRanker *r) : num_guesses(0), ranker(r), dictionary_fp(d_fp), eligible_fp(InsertFilePathSuffix(dictionary_fp, WordleSolver::ELIGIBLE_FP_SUFFIX)) {}
 

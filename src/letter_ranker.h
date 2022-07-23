@@ -4,6 +4,9 @@ Header for LetterRanker.
 This file defines the LetterRanker class. This class derives
 BaseRanker where the rank a word is derived from the frequency
 of its letters in the eligible words.
+
+Author: Chami Lamelas
+Date: Summer 2022
 */
 
 #ifndef LETTER_RANKER_H

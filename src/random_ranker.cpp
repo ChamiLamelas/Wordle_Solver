@@ -1,4 +1,6 @@
 // Implementation of random_ranker.h
+// Author: Chami Lamelas
+// Date: Summer 2022
 
 #include "random_ranker.h"
 #include <ctime>

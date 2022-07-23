@@ -1,3 +1,7 @@
+// Client code (including main())
+// Author: Chami Lamelas
+// Date: Summer 2022
+
 #include <iostream>
 #include <string>
 #include <string_view>

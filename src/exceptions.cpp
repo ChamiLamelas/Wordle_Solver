@@ -1,6 +1,6 @@
-/*
-Implementation for exceptions header.
-*/
+// Implementation for exceptions header.
+// Author: Chami Lamelas
+// Date: Summer 2022
 
 #include "exceptions.h"
 

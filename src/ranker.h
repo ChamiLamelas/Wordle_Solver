@@ -4,6 +4,9 @@ Header for BaseRanker.
 This file declares the BaseRanker abstract class. It specifies the necessary
 methods for its derived classes which will implement specific word ranking
 strategies that are used by WordleSolver.
+
+Author: Chami Lamelas
+Date: Summer 2022
 */
 
 #ifndef RANKER_H
