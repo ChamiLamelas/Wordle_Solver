@@ -11,13 +11,15 @@
 #include "solver.h"
 #include "evaluation.h"
 #include "exceptions.h"
+#include "letter_ranker.h"
+#include "duplicate_penalty_letter_ranker.h"
 
 /*
 Runs user mode for user to enter Wordle feedback.
 
 This is the default mode of operation for the main client code. That is,
 a WordleSolver is constructed and used with the feedback being typed in
-by the user. The user types in b where they see a black square on the 
+by the user. The user types in b where they see a black square on the
 Wordle website, y when they see a yellow square, and g when they
 see a green square.
 
@@ -35,9 +37,14 @@ int main()
 {
     RandomRanker rr(1);
     BaseRanker *rr_ptr{&rr};
+    LetterRanker lr;
+    BaseRanker *lr_ptr{&lr};
+    DuplicatePenaltyLetterRanker dplr(100);
+    BaseRanker *dplr_ptr{&dplr};
+
     try
     {
-        RunUserMode("data/tabatkins_github_words.txt", rr_ptr);
+        RunUserMode("data/tabatkins_github_words.txt", dplr_ptr);
     }
     catch (const WordleSolverException &e)
     {
@@ -46,7 +53,6 @@ int main()
 
     return 0;
 }
-
 
 // Private helper functions for RunUserMode
 
@@ -101,7 +107,7 @@ void RunUserMode(std::string_view dictionary_fp, BaseRanker *ranker)
         feedback = ReadFeedback();
         if (feedback == "ggggg")
         {
-            std::cout << "Solver guessed  [" << guess << "] in " << num_attempts << " attempts." << std::endl;
+            std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts << " attempts." << std::endl;
             return;
         }
         guess = solver.Guess(feedback);

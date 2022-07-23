@@ -65,7 +65,7 @@ public:
         Random rank between 0 and RAND_MAX see
         https://cplusplus.com/reference/cstdlib/RAND_MAX/.
     */
-    int Rank(std::string_view word) override;
+    int Rank(std::string_view word) const override;
 
     /*
     Returns the name of this ranking scheme.

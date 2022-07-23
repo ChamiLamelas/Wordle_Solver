@@ -118,7 +118,7 @@ public:
     static void UpdateEligibleWords(WordleSolver &self, std::string_view feedback)
     {
         // Set of characters that have been identified as yellow
-        std::set<char> yellow;
+        std::unordered_set<char> yellow;
 
         // First we will pass over feedback and just work with green feedback in the hope
         // that learning prev_guess[idx] for is meant to be at index idx will clear out

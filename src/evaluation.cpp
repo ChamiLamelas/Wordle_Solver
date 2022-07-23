@@ -76,7 +76,7 @@ short Evaluate(WordleSolver &solver, std::string_view word)
         // use feedback from previous guess
         guess = (num_guesses == 0) ? solver.Guess() : solver.Guess(feedback);
         feedback = GetFeedback(guess, word);
-        if (feedback == "yyyyy")
+        if (feedback == "ggggg")
         {
             return num_guesses;
         }

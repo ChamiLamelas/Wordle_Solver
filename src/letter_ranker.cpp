@@ -34,7 +34,7 @@ void LetterRanker::SetUp(const std::string &eligible_fp)
     eligible_file.close();
 
     // Collect the letters in the eligible words into a vector, container
-    // to be sorted must have random access iterators 
+    // to be sorted must have random access iterators
     // (https://cplusplus.com/reference/algorithm/sort/)
     std::vector<char> keys;
     for (const auto &p : counts)
@@ -54,13 +54,13 @@ void LetterRanker::SetUp(const std::string &eligible_fp)
     }
 }
 
-int LetterRanker::Rank(std::string_view word)
+int LetterRanker::Rank(std::string_view word) const
 {
     // Sums rank of letters in word using map
     int rank{0};
     for (const auto &c : word)
     {
-        rank += ranking[c];
+        rank += ranking.find(c)->second;
     }
     return rank;
 }
@@ -68,4 +68,10 @@ int LetterRanker::Rank(std::string_view word)
 std::string LetterRanker::Name() const
 {
     return "LetterRanker";
+}
+
+int LetterRanker::GetCount(char letter) const
+{
+    auto itr{ranking.find(letter)};
+    return (itr == ranking.end()) ? 0 : itr->second;
 }

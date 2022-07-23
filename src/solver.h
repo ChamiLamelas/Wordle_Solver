@@ -16,7 +16,7 @@ Date: Summer 2022
 #include "ranker.h"
 #include <string>
 #include <string_view>
-#include <set>
+#include <unordered_set>
 
 /*
 Solver for Wordle game.
@@ -86,7 +86,7 @@ private:
     /*
     Set of the indices (0-4) of the solution that have been found so far.
     */
-    std::set<unsigned short> found_indices;
+    std::unordered_set<unsigned short> found_indices;
 
     /*
     Filepath to where the eligible words from the dictionary will be stored.

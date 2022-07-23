@@ -22,7 +22,7 @@ Assuming that the wordle solution is selected randomly from the list of
 wordle solutions, a guess that is made up of letters that appear frequently
 in eligible words is more likely to contain letters in the solution word.
 */
-class LetterRanker final : public BaseRanker
+class LetterRanker : public BaseRanker
 {
 public:
     /*
@@ -39,7 +39,7 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
     */
-    void SetUp(const std::string &eligible_fp) override;
+    virtual void SetUp(const std::string &eligible_fp) override;
 
     /*
     Computes the rank of a word as the sum of its letter ranks.
@@ -52,12 +52,24 @@ public:
     Returns:
         The rank as computed above.
     */
-    int Rank(std::string_view word) override;
+    virtual int Rank(std::string_view word) const override;
 
     /*
     Returns the name of this ranking scheme.
     */
-    std::string Name() const override;
+    virtual std::string Name() const override;
+
+    /*
+    Gets the count of a letter currently stored by the ranker.
+
+    Parameters:
+        letter: A letter
+
+    Returns:
+        The count of letter calculated in SetUp or 0 if no count can
+        be found for the letter.
+    */
+    virtual int GetCount(char letter) const;
 
 private:
     /*

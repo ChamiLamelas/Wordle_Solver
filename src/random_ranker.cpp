@@ -20,7 +20,7 @@ void RandomRanker::SetUp(const std::string &eligible_fp)
     // Have nothing to do
 }
 
-int RandomRanker::Rank(std::string_view word)
+int RandomRanker::Rank(std::string_view word) const
 {
     return rand();
 }

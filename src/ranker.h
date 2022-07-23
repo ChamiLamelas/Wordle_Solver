@@ -49,6 +49,7 @@ public:
 
     This function calculates the rank for a word. A rank can be any integer.
     WordleSolver will choose the eligible word w where Rank(w) is the lowest.
+    It is assumed the word has been seen in SetUp.
 
     Parameters:
         word: Word to rank.
@@ -56,7 +57,7 @@ public:
     Returns:
         Rank of word.
     */
-    virtual int Rank(std::string_view word) = 0;
+    virtual int Rank(std::string_view word) const = 0;
 
     /*
     Provides a name for the ranker.
