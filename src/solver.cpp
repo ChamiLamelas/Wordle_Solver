@@ -115,36 +115,70 @@ public:
     // Updates the eligible words stored by a WordleSolver given feedback
     static void UpdateEligibleWords(WordleSolver &self, std::string_view feedback)
     {
+        // Set of characters that have been identified as yellow
         std::set<char> yellow;
+
+        // First we will pass over feedback and just work with green feedback in the hope
+        // that learning prev_guess[idx] for is meant to be at index idx will clear out
+        // a lot of eligible words
         for (auto fitr{feedback.cbegin()}; fitr != feedback.cend(); fitr++)
         {
             auto idx{std::distance(feedback.cbegin(), fitr)};
-            auto green_predicate = [&self, &idx](std::string_view word)
-            {
-                return word[idx] == self.prev_guess[idx];
-            };
+            // Feedback green at this letter => found correct letter in correct place, if
+            // this found only on the previous guess we need to adjust eligible words.
             if (*fitr == 'g' && self.found_indices.find(idx) == self.found_indices.end())
             {
-                Private::KeepOnPredicate(self, green_predicate);
+                // Green predicate: Keep only words of eligible words that have prev_guess[idx]
+                // at idx
+                Private::KeepOnPredicate(self, [&self, &idx](std::string_view word)
+                                         { return word[idx] == self.prev_guess[idx]; });
+
+                // Mark that we have found letter at idx, this means in future guesses that
+                // are made by the solver, we won't go through eligible words uneccessarily
+                // as we have ensured above that all the eligible words in future rounds
+                // will only have prev_guess[idx] at idx
                 self.found_indices.insert(idx);
-                yellow.erase(self.prev_guess[idx]);
             }
         }
 
+        // Next pass over feedback will deal with yellow and black feedback as those will
+        // most likely remove less words
         for (auto fitr{feedback.cbegin()}; fitr != feedback.cend(); fitr++)
         {
             auto idx{std::distance(feedback.cbegin(), fitr)};
-            auto yellow_predicate = [&self, &idx](std::string_view word)
+            if (*fitr == 'y')
             {
-                auto loc{word.find(self.prev_guess[idx])};
-                return loc != std::string::npos && loc != idx && self.found_indices.find(loc) == self.found_indices.end();
-            };
-            auto black_predicate = [&self, &idx, &yellow](std::string_view word)
+                // Mark letter has been found as yellow (used in black predicate)
+                yellow.insert(self.prev_guess[idx]);
+
+                // Yellow predicate: keep words that meet all of these conditions
+                // 1. prev_guess[idx] is in word
+                // 2. prev_guess[idx] is not at idx in word
+                // 3. prev_guess[idx] is not at any of the indices that have already been found
+                Private::KeepOnPredicate(self, [&self, &idx](std::string_view word)
+                                         {
+                    auto loc{word.find(self.prev_guess[idx])};
+                    return loc != std::string::npos && loc != idx && self.found_indices.find(loc) == self.found_indices.end(); });
+            }
+            else if (*fitr == 'b')
             {
+                Private::KeepOnPredicate(self, [&self, &idx, &yellow](std::string_view word)
+                                         {
+                // Black predicate: If prev_guess[idx] was seen at an earlier index and was 
+                // marked yellow, then only keep words where it has a character other than
+                // prev_guess[idx] at idx. Why? If we have feedback where a letter is first
+                // marked yellow at index i than later black at index j, that means the letter 
+                // occurs in the word at neither i or j, but could be anywhere else. Example:
+                // Feedback for guess "three" for solution "beach" is "bybyb".
                 if (yellow.find(self.prev_guess[idx]) != yellow.end())
                 {
                     return word[idx] != self.prev_guess[idx];
                 }
+                // If prev_guess[idx] was not seen at an earlier index and marked yellow, then
+                // only keep words where prev_guess[idx] is not anywhere in the word other than
+                // the found indices. Why? A letter can be marked black at some letter(s) and
+                // green at others. Example: Feedback for guess "there" for solution "their"
+                // is "gggyb".
                 for (auto widx{0}; widx < word.size(); widx++)
                 {
                     if (self.found_indices.find(widx) == self.found_indices.end() && word[widx] == self.prev_guess[idx])
@@ -152,47 +186,53 @@ public:
                         return false;
                     }
                 }
-                return true;
-            };
-            if (*fitr == 'y')
-            {
-                yellow.insert(self.prev_guess[idx]);
-                Private::KeepOnPredicate(self, yellow_predicate);
-            }
-            else if (*fitr == 'b')
-            {
-                Private::KeepOnPredicate(self, black_predicate);
+                return true; });
             }
         }
     }
 
-    static void CopyDataset(WordleSolver &self)
+    // Copies dictionary into eligible words file
+    static void CopyDictionary(WordleSolver &self)
     {
-        std::ifstream dataset_file(self.dictionary_fp, std::ios_base::in);
-        if (!dataset_file.is_open())
+        // Read-only file stream for dictionary
+        std::ifstream dictionary_file(self.dictionary_fp, std::ios_base::in);
+        if (!dictionary_file.is_open())
         {
-            throw WordleSolverException("Could not open dataset for reading");
+            throw WordleSolverException("Could not open dictionary file for reading");
         }
 
-        std::ofstream temp_file(self.eligible_fp, std::ios_base::out);
-        if (!temp_file.is_open())
+        // Write-only file stream for eligible words
+        std::ofstream eligible_file(self.eligible_fp, std::ios_base::out);
+        if (!eligible_file.is_open())
         {
             throw WordleSolverException("Could not open eligible words file for writing");
         }
 
-        std::string line;
-        while (dataset_file.good())
+        // Read dictionary file line by line and copy each word to eligible words
+        // file - first_word used to put \n after all but the last word
+        bool first_word{true};
+        std::string word;
+        while (dictionary_file.good())
         {
-            std::getline(dataset_file, line);
-            temp_file << line << "\n";
+            std::getline(dictionary_file, word);
+            if (!first_word)
+            {
+                eligible_file << "\n";
+            }
+
+            eligible_file << word;
+            if (first_word)
+            {
+                first_word = false;
+            }
         }
 
-        temp_file << std::flush;
-        dataset_file.close();
-        temp_file.close();
+        dictionary_file.close();
+        eligible_file.close();
     }
 };
 
+// Feedback could never be ""
 std::string WordleSolver::FEEDBACK_PLACEHOLDER = "";
 std::string WordleSolver::ELIGIBLE_FP_SUFFIX = "-temp";
 
@@ -205,31 +245,45 @@ std::string WordleSolver::Guess()
 
 std::string WordleSolver::Guess(std::string_view feedback)
 {
-
+    // Making initial guess
     if (feedback == FEEDBACK_PLACEHOLDER)
     {
-        Private::CopyDataset(*this);
+        // Copy dictionary into eligible words file, reset indices that have been
+        // found and that no guesses have been made (yet)
+        Private::CopyDictionary(*this);
         found_indices.clear();
         num_guesses = 0;
     }
-    else
+    else // When we have feedback, use it
     {
         Private::UpdateEligibleWords(*this, feedback);
     }
 
-    ranker->SetUp(eligible_fp);
-    std::string current_guess;
-    unsigned int current_min_rank{UINT_MAX};
-    unsigned int current_rank;
-    std::string word;
-    std::ifstream temp_file(eligible_fp, std::ios_base::in);
-    if (!temp_file.is_open())
+    // Read-only file stream for eligible words
+    std::ifstream eligible_file(eligible_fp, std::ios_base::in);
+    if (!eligible_file.is_open())
     {
         throw WordleSolverException("Could not open eligible words");
     }
-    while (temp_file.good())
+
+    // Prepare ranker (part of contract between WordleSolver and BaseRanker)
+    ranker->SetUp(eligible_fp);
+
+    // word with rank = current_min_rank
+    std::string current_guess;
+
+    // lowest rank seen so far (every words rank assumed < INT_MAX)
+    int current_min_rank{INT_MAX};
+
+    // rank of current word
+    int current_rank;
+
+    // Read over eligible words line by line and calculate rank, update
+    // current_min_rank and current_guess accordingly
+    std::string word;
+    while (eligible_file.good())
     {
-        std::getline(temp_file, word);
+        std::getline(eligible_file, word);
         current_rank = ranker->Rank(word);
         if (current_rank < current_min_rank)
         {
@@ -237,11 +291,15 @@ std::string WordleSolver::Guess(std::string_view feedback)
             current_min_rank = current_rank;
         }
     }
-    temp_file.close();
+    eligible_file.close();
+
+    // current_guess was never set in above loop
     if (current_guess.empty())
     {
         throw WordleSolverException("Unable to make guess - no eligible words");
     }
+
+    // Mark we have made guess and store guess to make future guesses
     num_guesses++;
     prev_guess = current_guess;
     return current_guess;
