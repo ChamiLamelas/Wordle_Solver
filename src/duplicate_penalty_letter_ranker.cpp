@@ -10,7 +10,7 @@ int DuplicatePenaltyLetterRanker::Rank(std::string_view word) const
     int rank{0};
     for (const auto &c : word)
     {
-        rank += GetCount(c);
+        rank += GetRank(c);
         uniq_letters.insert(c);
     }
     return rank + (duplicate_penalty * (word.size() - uniq_letters.size()));

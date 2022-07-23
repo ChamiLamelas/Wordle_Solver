@@ -4,12 +4,13 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <limits>
 
-void DisplayMap(const std::unordered_map<std::string, int> &m)
+void DisplayInfo(std::vector<std::string> v, std::unordered_map<std::string, int> m)
 {
-    for (const auto &e : m)
+    for (const auto &e : v)
     {
-        std::cout << e.first << " " << e.second << std::endl;
+        std::cout << e << ": " << m[e] << std::endl;
     }
 }
 
@@ -56,12 +57,12 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp)
         ranking[keys[i]] = i + 1;
     }
 
-    DisplayMap(counts);
+    DisplayInfo(keys, counts);
 }
 
 int TwoLetterRanker::Rank(std::string_view word) const
 {
-    // Sums rank of letters in word using map
+    // Sums rank of substrings in word using map
     int rank{0};
     for (auto i{0}; i < word.size() - 1; i++)
     {
@@ -75,6 +76,12 @@ int TwoLetterRanker::Rank(std::string_view word) const
 std::string TwoLetterRanker::Name() const
 {
     return "TwoLetterRanker";
+}
+
+int TwoLetterRanker::GetRank(std::string_view substr) const
+{
+    auto itr{ranking.find(std::string(substr))};
+    return (itr == ranking.end()) ? INT_MAX : itr->second;
 }
 
 int TwoLetterRanker::GetCount(std::string_view substr) const

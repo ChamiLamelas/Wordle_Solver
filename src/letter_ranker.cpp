@@ -7,6 +7,7 @@
 #include "exceptions.h"
 #include <vector>
 #include <algorithm>
+#include <limits>
 
 LetterRanker::LetterRanker(){};
 
@@ -69,6 +70,12 @@ int LetterRanker::Rank(std::string_view word) const
 std::string LetterRanker::Name() const
 {
     return "LetterRanker";
+}
+
+int LetterRanker::GetRank(char letter) const
+{
+    auto itr{ranking.find(letter)};
+    return (itr == ranking.end()) ? INT_MAX : itr->second;
 }
 
 int LetterRanker::GetCount(char letter) const

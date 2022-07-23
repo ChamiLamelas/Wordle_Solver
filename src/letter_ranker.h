@@ -60,6 +60,18 @@ public:
     virtual std::string Name() const override;
 
     /*
+    Gets the ramk of a letter currently stored by the ranker.
+
+    Parameters:
+        letter: A letter
+
+    Returns:
+        The rank of letter calculated in SetUp or INT_MAX if no rank can be
+        found for this letter.
+    */
+    virtual int GetRank(char letter) const;
+
+    /*
     Gets the count of a letter currently stored by the ranker.
 
     Parameters:

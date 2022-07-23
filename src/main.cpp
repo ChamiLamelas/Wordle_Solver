@@ -14,6 +14,7 @@
 #include "letter_ranker.h"
 #include "duplicate_penalty_letter_ranker.h"
 #include "two_letter_ranker.h"
+#include "duplicate_penalty_two_letter_ranker.h"
 
 /*
 Runs user mode for user to enter Wordle feedback.
@@ -44,10 +45,12 @@ int main()
     BaseRanker *dplr_ptr{&dplr};
     TwoLetterRanker tlr;
     BaseRanker *tlr_ptr{&tlr};
+    DuplicatePenaltyTwoLetterRanker dptlr(100);
+    BaseRanker *dptlr_ptr{&dptlr};
 
     try
     {
-        RunUserMode("data/tabatkins_github_words.txt", tlr_ptr);
+        RunUserMode("data/tabatkins_github_words.txt", dptlr_ptr);
     }
     catch (const WordleSolverException &e)
     {
