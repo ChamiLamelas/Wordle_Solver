@@ -8,12 +8,27 @@
 #include "evaluation.h"
 #include "exceptions.h"
 
-std::string ReadFeedback();
+/*
+Runs user mode for user to enter Wordle feedback.
+
+This is the default mode of operation for the main client code. That is,
+a WordleSolver is constructed and used with the feedback being typed in
+by the user. The user types in b where they see a black square on the 
+Wordle website, y when they see a yellow square, and g when they
+see a green square.
+
+Parameters:
+    dictionary_fp: Dictionary filepath.
+    ranker: Specifies ranking scheme.
+*/
 void RunUserMode(std::string_view dictionary_fp, BaseRanker *ranker);
 
+/*
+Main function - by default uses RunUserMode, can alternatively make
+use of evaluation header.
+*/
 int main()
 {
-    // Test 
     RandomRanker rr(1);
     BaseRanker *rr_ptr{&rr};
     try
@@ -27,6 +42,9 @@ int main()
 
     return 0;
 }
+
+
+// Private helper functions for RunUserMode
 
 void Trim(std::string &s)
 {

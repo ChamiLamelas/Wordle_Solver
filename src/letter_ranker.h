@@ -1,19 +1,72 @@
+/*
+Header for LetterRanker.
+
+This file defines the LetterRanker class. This class derives
+BaseRanker where the rank a word is derived from the frequency
+of its letters in the eligible words.
+*/
+
 #ifndef LETTER_RANKER_H
 #define LETTER_RANKER_H
 
 #include "ranker.h"
 #include <unordered_map>
 
+/*
+This class defines a ranking scheme based on letter frequency.
+
+Assuming that the wordle solution is selected randomly from the list of
+wordle solutions, a guess that is made up of letters that appear frequently
+in eligible words is more likely to contain letters in the solution word.
+*/
 class LetterRanker final : public BaseRanker
 {
-private:
-    std::unordered_map<char, int> ranking;
-
 public:
+    /*
+    Constructs a LetterRanker.
+    */
     LetterRanker();
-    void SetUp(const std::string &temp_fp) override;
+
+    /*
+    Sets up a LetterRanker to rank based on the currently eligible words.
+
+    In particular, each letter is ranked based on its frequency in the eligible
+    words (not in the original dictionary).
+
+    Parameters:
+        eligible_fp: Path to the remaining eligible words.
+    */
+    void SetUp(const std::string &eligible_fp) override;
+
+    /*
+    Computes the rank of a word as the sum of its letter ranks.
+
+    There is no penalty of duplicate letters.
+
+    Parameters:
+        word: Word to rank.
+
+    Returns:
+        The rank as computed above.
+    */
     int Rank(std::string_view word) override;
-    std::string Name() override;
+
+    /*
+    Returns the name of this ranking scheme.
+    */
+    std::string Name() const override;
+
+private:
+    /*
+    Stores the rank (1,2,...) of each letter that appears in the eligible words.
+    Assuming only letters a-z, this could be replaced by a length 26
+    int array. This is updated by SetUp which, as described in WordleSolver,
+    is called before each guess is made so that ranking can be adjusted
+    for the eligible words. Note, the letters that were most frequent
+    in the overall dictionary may not the best most frequent after the
+    dictionary has been reduced via various rounds of feedback.
+    */
+    std::unordered_map<char, int> ranking;
 };
 
 #endif

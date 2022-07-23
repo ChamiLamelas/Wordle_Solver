@@ -1,3 +1,7 @@
+/*
+Implementation for exceptions header.
+*/
+
 #include "exceptions.h"
 
 WordleSolverException::WordleSolverException(std::string_view r) : reason(r) {}
