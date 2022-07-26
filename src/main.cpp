@@ -48,9 +48,14 @@ int main()
     DuplicatePenaltyTwoLetterRanker dptlr(100);
     BaseRanker *dptlr_ptr{&dptlr};
 
+    std::vector<std::string> dictionary_fps{"data/tabatkins_github_words.txt"};
+    // lr_ptr, dplr_ptr, tlr_ptr, dptlr_ptr
+    std::vector<BaseRanker*> rankers{rr_ptr};
+
     try
     {
-        RunUserMode("data/tabatkins_github_words.txt", dptlr_ptr);
+        // RunUserMode(dictionary_fps[0], rr_ptr);
+        GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt", "output.txt");
     }
     catch (const WordleSolverException &e)
     {
