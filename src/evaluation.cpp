@@ -176,10 +176,10 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
             // Compute statistics and write to output file
             GetStatistics(guess_counts, mean, std_dev, fail_count);
             output_file << std::left << std::setw(40) << *dfp_itr << std::setw(50) << (*rkr_itr)->Name() << std::setw(20)
-                        << std::right << mean << std::setw(20) << std_dev << std::setw(20) << (100.0 * fail_count)/words.size() << std::endl;
+                        << std::right << mean << std::setw(20) << std_dev << std::setw(20) << (100.0 * fail_count) / words.size() << std::endl;
+            std::cout << "Finished Evaluation of Dictionary [" << *dfp_itr << "] Ranker [" << (*rkr_itr)->Name() << "]" << std::endl;
         }
     }
-
     output_file.close();
-    std::cout << "Grid evaluation done" << std::endl;
+    std::cout << "GridEvaluation Complete" << std::endl;
 }
