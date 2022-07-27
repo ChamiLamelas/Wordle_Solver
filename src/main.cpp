@@ -48,7 +48,7 @@ int main()
     DuplicatePenaltyTwoLetterRanker dptlr(100);
     BaseRanker *dptlr_ptr{&dptlr};
 
-    std::vector<std::string> dictionary_fps{"data/tabatkins_github_words.txt"};
+    std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt"};
     // lr_ptr, dplr_ptr, tlr_ptr, dptlr_ptr
     std::vector<BaseRanker*> rankers{rr_ptr};
 
