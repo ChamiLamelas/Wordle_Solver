@@ -1,3 +1,7 @@
+// Implementation of user header
+// Author: Chami Lamelas
+// Date: Summer 2022
+
 #include "user.h"
 #include <algorithm>
 #include <iostream>

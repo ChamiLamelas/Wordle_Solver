@@ -1,3 +1,7 @@
+// Implementation for two_letter_ranker.h
+// Author: Chami Lamelas
+// Date: Summer 2022
+
 #include "two_letter_ranker.h"
 #include <fstream>
 #include "exceptions.h"
@@ -5,14 +9,6 @@
 #include <algorithm>
 #include <iostream>
 #include <limits>
-
-void DisplayInfo(std::vector<std::string> v, std::unordered_map<std::string, int> m)
-{
-    for (const auto &e : v)
-    {
-        std::cout << e << ": " << m[e] << std::endl;
-    }
-}
 
 TwoLetterRanker::TwoLetterRanker() {}
 
@@ -56,8 +52,6 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess
     {
         ranking[keys[i]] = i + 1;
     }
-
-    // DisplayInfo(keys, counts);
 }
 
 int TwoLetterRanker::Rank(std::string_view word, unsigned short guess) const

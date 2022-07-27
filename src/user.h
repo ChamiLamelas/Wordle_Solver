@@ -1,3 +1,13 @@
+/*
+Header for user mode. 
+
+This file declares the RunUserMode function to allow one to use the solver
+while they are trying to solve the Wordle game online.
+
+Author: Chami Lamelas
+Date: Summer 2022
+*/
+
 #ifndef USER_H
 #define USER_H
 

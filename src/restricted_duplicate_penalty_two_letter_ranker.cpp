@@ -1,3 +1,7 @@
+// Implementation for restricted_duplicate_penalty_two_letter_ranker.h
+// Author: Chami Lamelas
+// Date: Summer 2022
+
 #include "restricted_duplicate_penalty_two_letter_ranker.h"
 
 RestrictedDuplicatePenaltyTwoLetterRanker::RestrictedDuplicatePenaltyTwoLetterRanker(int p, unsigned short ng): DuplicatePenaltyTwoLetterRanker(p), num_guesses(ng) {}

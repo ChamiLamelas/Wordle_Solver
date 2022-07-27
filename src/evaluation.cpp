@@ -77,7 +77,6 @@ short Evaluate(WordleSolver &solver, std::string_view word)
         // use feedback from previous guess
         guess = (num_guesses == 0) ? solver.Guess() : solver.Guess(feedback);
         feedback = GetFeedback(guess, word);
-        // std::cout << "Guess: " << guess << " Feedback: " << feedback << std::endl;
         if (feedback == "ggggg")
         {
             return num_guesses;
@@ -170,7 +169,6 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
             // that word with Evaluate()
             for (auto w_itr{words.cbegin()}; w_itr != words.cend(); w_itr++)
             {
-                // std::cout << "Dictionary: " << *dfp_itr << " Ranker: " << (*rkr_itr)->Name() << " Word: " << *w_itr << std::endl;
                 auto idx{std::distance(words.cbegin(), w_itr)};
                 guess_counts[idx] = Evaluate(solver, *w_itr);
             }

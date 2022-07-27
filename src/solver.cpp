@@ -125,7 +125,6 @@ public:
                 // at idx
                 Private::KeepOnPredicate(self, [&self, &idx](std::string_view word)
                                          { return word[idx] == self.prev_guess[idx]; });
-                // std::cout << "After green pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
 
                 // Mark that we have found letter at idx, this means in future guesses that
                 // are made by the solver, we won't go through eligible words uneccessarily
@@ -167,7 +166,6 @@ public:
                     }
 
                     return false; });
-                // std::cout << "After yellow pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
             }
             else if (*fitr == 'b')
             {
@@ -204,7 +202,6 @@ public:
                 }
                 
                 return true; });
-                // std::cout << "After black pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
             }
         }
     }

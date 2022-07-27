@@ -1,3 +1,7 @@
+// Implementation for duplicate_penalty_two_letter_ranker.h
+// Author: Chami Lamelas
+// Date: Summer 2022
+
 #include "duplicate_penalty_two_letter_ranker.h"
 #include <unordered_set>
 

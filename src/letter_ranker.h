@@ -62,7 +62,7 @@ public:
     virtual std::string Name() const override;
 
     /*
-    Gets the ramk of a letter currently stored by the ranker.
+    Gets the rank of a letter currently stored by the ranker.
 
     Parameters:
         letter: A letter
@@ -94,7 +94,7 @@ private:
     updated. Note, the letters that were most frequent in the overall
     dictionary may not the best most frequent after the dictionary has
     been reduced via various rounds of feedback.
-     */
+    */
     std::unordered_map<char, int> counts;
 
     /*
