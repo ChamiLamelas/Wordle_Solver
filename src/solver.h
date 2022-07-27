@@ -76,10 +76,8 @@ private:
 
     /*
     Stores the current number of guesses the solver has made. Before any
-    guess has been made, num_guesses = 0. Otherwise, it's 1-6. Currently
-    not used, but plan is to allow AbstractRanker::Rank() to take a word and
-    the current number of guesses that have been made. This could be
-    used in incorporating penalties for duplicates when ranking words.
+    guess has been made, num_guesses = 0. Otherwise, it's 1-6. num_guesses + 1
+    is passed to AbstractRanker::SetUp and Rank.
     */
     unsigned short num_guesses;
 
