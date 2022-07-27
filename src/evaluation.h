@@ -75,8 +75,8 @@ Parameters:
     over 40 characters.
     rankers: Container of ranking schemes specified via AbstractRanker pointers.
     words_fp: Filepath of 5-letter words to evaluate solvers on. Assumed words in this 
-    filecan be stored in memory.
-    output_fp: Filepath where output should go.
+    filecan be stored in memory. If words_fp is at path.txt then the output will be
+    at path-output.txt. 
 */
 void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<AbstractRanker *> &rankers, const std::string &words_fp);
 
