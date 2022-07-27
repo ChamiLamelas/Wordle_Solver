@@ -7,16 +7,7 @@
 #include <limits>
 #include <iostream>
 #include "exceptions.h"
-
-// Helper function that inserts a suffix into a filepath infront of the extension
-// Takes const string& for 2 reasons: easier to concatenate strings and filepaths
-// tend to be taken as const string& in many C++ functions.
-// Example: InsertFilePathSuffix("a.txt", "b") -> "ab.txt"
-std::string InsertFilePathSuffix(const std::string &fp, const std::string &suffix)
-{
-    auto idx = fp.find_last_of('.');
-    return fp.substr(0, idx) + suffix + fp.substr(idx);
-}
+#include "file_ops.h"
 
 class WordleSolver::Private
 {
@@ -176,7 +167,7 @@ public:
                     }
 
                     return false; });
-                    // std::cout << "After yellow pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
+                // std::cout << "After yellow pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
             }
             else if (*fitr == 'b')
             {
@@ -311,7 +302,7 @@ std::string WordleSolver::Guess(std::string_view feedback)
     }
 
     // Prepare ranker (part of contract between WordleSolver and BaseRanker)
-    ranker->SetUp(eligible_fp);
+    ranker->SetUp(eligible_fp, num_guesses + 1);
 
     // word with rank = current_min_rank
     std::string current_guess;
@@ -328,7 +319,7 @@ std::string WordleSolver::Guess(std::string_view feedback)
     while (eligible_file.good())
     {
         std::getline(eligible_file, word);
-        current_rank = ranker->Rank(word);
+        current_rank = ranker->Rank(word, num_guesses + 1);
         if (current_rank < current_min_rank)
         {
             current_guess = word;
