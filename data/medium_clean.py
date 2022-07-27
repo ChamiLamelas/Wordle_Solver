@@ -1,3 +1,10 @@
+"""
+Script for extracting words from Medium words file.
+
+Chami Lamelas
+Summer 2022
+"""
+
 with open("medium_wordle_words_todate_original.txt", "r", encoding="utf-8") as of, \
         open("medium_wordle_words_todate.txt", "w+", encoding="utf-8") as f:
     first_line = True
