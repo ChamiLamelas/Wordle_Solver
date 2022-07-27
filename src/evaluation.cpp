@@ -76,7 +76,7 @@ short Evaluate(WordleSolver &solver, std::string_view word)
         // use feedback from previous guess
         guess = (num_guesses == 0) ? solver.Guess() : solver.Guess(feedback);
         feedback = GetFeedback(guess, word);
-        std::cout << "Guess: " << guess << " Feedback: " << feedback << std::endl;
+        // std::cout << "Guess: " << guess << " Feedback: " << feedback << std::endl;
         if (feedback == "ggggg")
         {
             return num_guesses;
@@ -92,7 +92,7 @@ void GetStatistics(const std::vector<short> &guess_counts, double &mean, double 
 
     // Iterate over guess counts and calculate non-FAILED guess count total and
     // number of FAILED counts
-    size_t counts_total{0};
+    double counts_total{0};
     for (auto citr{guess_counts.cbegin()}; citr != guess_counts.cend(); citr++)
     {
         if (*citr == FAILED)
@@ -109,7 +109,7 @@ void GetStatistics(const std::vector<short> &guess_counts, double &mean, double 
     mean = counts_total / (guess_counts.size() - fail_count);
 
     // Compute total of squared deviations from the mean of non-FAILED elements
-    size_t dev_sq_total{0};
+    double dev_sq_total{0};
     for (auto citr{guess_counts.cbegin()}; citr != guess_counts.cend(); citr++)
     {
         if (*citr != FAILED)
@@ -147,8 +147,8 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
     words_file.close();
 
     // Write titles to output file
-    output_file << std::left << std::setw(40) << "Dictionary" << std::setw(15) << "Ranker" << std::setw(10) << "Mean"
-                << std::setw(10) << "SD" << std::setw(10) << "Failures" << std::endl;
+    output_file << std::left << std::setw(40) << "Dictionary" << std::setw(15) << "Ranker" << std::setw(20) << "Mean"
+                << std::setw(20) << "SD" << std::setw(20) << "Failure Rate (%)" << std::endl;
 
     // 6 decimals shown with all output (including integers stored in floats)
     output_file << std::fixed;
@@ -169,17 +169,18 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
             // that word with Evaluate()
             for (auto w_itr{words.cbegin()}; w_itr != words.cend(); w_itr++)
             {
-                std::cout << "Dictionary: " << *dfp_itr << " Ranker: " << (*rkr_itr)->Name() << " Word: " << *w_itr << std::endl;
+                // std::cout << "Dictionary: " << *dfp_itr << " Ranker: " << (*rkr_itr)->Name() << " Word: " << *w_itr << std::endl;
                 auto idx{std::distance(words.cbegin(), w_itr)};
                 guess_counts[idx] = Evaluate(solver, *w_itr);
             }
 
             // Compute statistics and write to output file
             GetStatistics(guess_counts, mean, std_dev, fail_count);
-            output_file << std::left << std::setw(40) << *dfp_itr << std::setw(15) << (*rkr_itr)->Name() << std::setw(10)
-                        << std::right << mean << std::setw(10) << std_dev << std::setw(10) << fail_count << std::endl;
+            output_file << std::left << std::setw(40) << *dfp_itr << std::setw(15) << (*rkr_itr)->Name() << std::setw(20)
+                        << std::right << mean << std::setw(20) << std_dev << std::setw(20) << (100.0 * fail_count)/words.size() << std::endl;
         }
     }
 
     output_file.close();
+    std::cout << "Grid evaluation done" << std::endl;
 }

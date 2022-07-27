@@ -134,6 +134,7 @@ public:
                 // at idx
                 Private::KeepOnPredicate(self, [&self, &idx](std::string_view word)
                                          { return word[idx] == self.prev_guess[idx]; });
+                // std::cout << "After green pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
 
                 // Mark that we have found letter at idx, this means in future guesses that
                 // are made by the solver, we won't go through eligible words uneccessarily
@@ -153,14 +154,29 @@ public:
                 // Mark letter has been found as yellow (used in black predicate)
                 yellow.insert(self.prev_guess[idx]);
 
-                // Yellow predicate: keep words that meet all of these conditions
-                // 1. prev_guess[idx] is in word
-                // 2. prev_guess[idx] is not at idx in word
-                // 3. prev_guess[idx] is not at any of the indices that have already been found
+                // Yellow predicate: keep words where prev_guess[idx] occurs somewhere in
+                // the word other than idx or any of the indices that have been found
                 Private::KeepOnPredicate(self, [&self, &idx](std::string_view word)
                                          {
                     auto loc{word.find(self.prev_guess[idx])};
-                    return loc != std::string::npos && loc != idx && self.found_indices.find(loc) == self.found_indices.end(); });
+
+                    // If loc == npos we have searched all instances of prev_guess[idx]
+                    // and none of them matched desired conditions
+                    while (loc != std::string::npos) {
+
+                        // Keep the word if we have found an instance of prev_guess[idx]
+                        // that is not at index and has not been found already
+                        if (loc != idx && self.found_indices.find(loc) == self.found_indices.end()) {
+                            return true;
+                        }
+
+                        // Search for next occurrence of self.prev_guess[idx] starting
+                        // from character after
+                        loc = word.find(self.prev_guess[idx], loc + 1);
+                    }
+
+                    return false; });
+                    // std::cout << "After yellow pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
             }
             else if (*fitr == 'b')
             {
@@ -181,17 +197,43 @@ public:
                 // the found indices. Why? A letter can be marked black at some letter(s) and
                 // green at others. Example: Feedback for guess "there" for solution "their"
                 // is "gggyb".
-                for (auto widx{0}; widx < word.size(); widx++)
-                {
-                    if (self.found_indices.find(widx) == self.found_indices.end() && word[widx] == self.prev_guess[idx])
-                    {
+                auto loc{word.find(self.prev_guess[idx])};
+
+                // Reached end of word without finding prev_guess[idx] that is not at a found
+                // index - keep the word
+                while (loc != std::string::npos) {
+
+                    // Found prev_guess[idx] somewhere other than correct indices in word
+                    // means we should reject the word
+                    if (self.found_indices.find(loc) == self.found_indices.end()) {
                         return false;
                     }
+
+                    loc = word.find(self.prev_guess[idx], loc+1);
                 }
+                
                 return true; });
+                // std::cout << "After black pass index " << idx << ", contains agora: " << CheckEligibleForWord(self, "agora") << std::endl;
             }
         }
     }
+
+    // static bool CheckEligibleForWord(WordleSolver &self, std::string_view target) {
+    //     std::ifstream eligible_file(self.eligible_fp, std::ios_base::in);
+    //     if (!eligible_file.is_open()) {
+    //         throw WordleSolverException("Could not open eligible file for reading");
+    //     }
+    //     std::string word;
+    //     bool out{false};
+    //     while (eligible_file.good()) {
+    //         std::getline(eligible_file, word);
+    //         if (word == target) {
+    //             out = true;
+    //         }
+    //     }
+    //     eligible_file.close();
+    //     return out;
+    // }
 
     // Copies dictionary into eligible words file
     static void CopyDictionary(WordleSolver &self)

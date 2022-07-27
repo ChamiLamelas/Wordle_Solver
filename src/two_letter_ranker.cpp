@@ -57,7 +57,7 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp)
         ranking[keys[i]] = i + 1;
     }
 
-    DisplayInfo(keys, counts);
+    // DisplayInfo(keys, counts);
 }
 
 int TwoLetterRanker::Rank(std::string_view word) const
