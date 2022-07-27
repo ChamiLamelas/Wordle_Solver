@@ -14,6 +14,7 @@
 #include <fstream>
 #include <iomanip>
 #include "exceptions.h"
+#include "file_ops.h"
 
 std::string GetFeedback(std::string_view guess, std::string_view word)
 {
@@ -120,7 +121,7 @@ void GetStatistics(const std::vector<short> &guess_counts, double &mean, double 
     std_dev = std::sqrt(dev_sq_total / (guess_counts.size() - fail_count));
 }
 
-void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<BaseRanker *> &rankers, const std::string &words_fp, const std::string &output_fp)
+void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<BaseRanker *> &rankers, const std::string &words_fp)
 {
     // Read-only file stream to words
     std::ifstream words_file(words_fp, std::ios_base::in);
@@ -130,7 +131,7 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
     }
 
     // Write-only file stream to output
-    std::ofstream output_file(output_fp, std::ios_base::out);
+    std::ofstream output_file(InsertFilePathSuffix(words_fp, OUTPUT_SUFFIX), std::ios_base::out);
     if (!output_file.is_open())
     {
         throw WordleSolverException("Could not open output file to write");
@@ -147,7 +148,7 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
     words_file.close();
 
     // Write titles to output file
-    output_file << std::left << std::setw(40) << "Dictionary" << std::setw(15) << "Ranker" << std::setw(20) << "Mean"
+    output_file << std::left << std::setw(40) << "Dictionary" << std::setw(50) << "Ranker" << std::setw(20) << "Mean"
                 << std::setw(20) << "SD" << std::setw(20) << "Failure Rate (%)" << std::endl;
 
     // 6 decimals shown with all output (including integers stored in floats)
@@ -176,7 +177,7 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
 
             // Compute statistics and write to output file
             GetStatistics(guess_counts, mean, std_dev, fail_count);
-            output_file << std::left << std::setw(40) << *dfp_itr << std::setw(15) << (*rkr_itr)->Name() << std::setw(20)
+            output_file << std::left << std::setw(40) << *dfp_itr << std::setw(50) << (*rkr_itr)->Name() << std::setw(20)
                         << std::right << mean << std::setw(20) << std_dev << std::setw(20) << (100.0 * fail_count)/words.size() << std::endl;
         }
     }

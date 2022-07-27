@@ -1,2 +1,0 @@
-Dictionary                              Ranker         Mean                SD                  Failure Rate (%)    
-data/dracos_github_words.txt            RandomRanker               3.656442            1.017518           13.527851

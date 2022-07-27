@@ -20,6 +20,9 @@ Date: Summer 2022
 // Constant to indicate Evaluate() failed
 const short FAILED{-1};
 
+// GridEvaluate() output file suffix
+const std::string OUTPUT_SUFFIX{"-output"};
+
 /*
 Derives the Wordle feedback for a guess for a particular word.
 
@@ -75,6 +78,6 @@ Parameters:
     filecan be stored in memory.
     output_fp: Filepath where output should go.
 */
-void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<BaseRanker *> &rankers, const std::string &words_fp, const std::string &output_fp);
+void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<BaseRanker *> &rankers, const std::string &words_fp);
 
 #endif
