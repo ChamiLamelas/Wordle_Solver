@@ -5,7 +5,8 @@
 #include "duplicate_penalty_letter_ranker.h"
 #include <unordered_set>
 
-DuplicatePenaltyLetterRanker::DuplicatePenaltyLetterRanker(int p) : duplicate_penalty(p) {}
+DuplicatePenaltyLetterRanker::DuplicatePenaltyLetterRanker(int p) : LetterRanker("DuplicatePenaltyLetterRanker"), duplicate_penalty(p) {}
+DuplicatePenaltyLetterRanker::DuplicatePenaltyLetterRanker(std::string_view name, int p) : LetterRanker(name), duplicate_penalty(p) {}
 
 int DuplicatePenaltyLetterRanker::Rank(std::string_view word, unsigned short guess) const
 {
@@ -18,9 +19,4 @@ int DuplicatePenaltyLetterRanker::Rank(std::string_view word, unsigned short gue
         uniq_letters.insert(c);
     }
     return rank + (duplicate_penalty * (word.size() - uniq_letters.size()));
-}
-
-std::string DuplicatePenaltyLetterRanker::Name() const
-{
-    return "DuplicatePenaltyLetterRanker";
 }

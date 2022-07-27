@@ -30,7 +30,10 @@ public:
 
     The current time is used in ranking eligible words, which means that
     results of using a WordleSolver with this ranking scheme will not
-    be reproducible even for the same solution word.
+    be reproducible even for the same solution word. An overloaded
+    version of this constructor that takes a name is not provided as
+    an non reproducible ranker is assumed to not be used for evaluation
+    and this class is final anyway.
     */
     RandomRanker();
 
@@ -46,6 +49,20 @@ public:
         seed: Specifies random seed to be used in ranking eligible words.
     */
     RandomRanker(unsigned int seed);
+
+    /*
+    Constructs a RandomRanker with reproducible rankings.
+
+    Since a seed is used in ranking eligible words, the results of using
+    a WordleSolver with this ranking scheme will be reproducible for the
+    same solution word. In fact, using the same dictionary, the same
+    initial guess will always be made.
+
+    Parameters:
+        name: Name for the ranker
+        seed: Specifies random seed to be used in ranking eligible words.
+    */
+    RandomRanker(std::string_view name, unsigned int seed);
 
     /*
     Sets up the RandomRanker for ranking.
@@ -68,11 +85,6 @@ public:
         https://cplusplus.com/reference/cstdlib/RAND_MAX/.
     */
     int Rank(std::string_view word, unsigned short guess) const override;
-
-    /*
-    Returns the name of this ranking scheme.
-    */
-    std::string Name() const override;
 };
 
 #endif

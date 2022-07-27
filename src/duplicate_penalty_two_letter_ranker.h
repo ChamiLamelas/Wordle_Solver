@@ -44,6 +44,15 @@ public:
     DuplicatePenaltyTwoLetterRanker(int p);
 
     /*
+    Constructs a DuplicatePenaltyTwoLetterRanker with a penalty.
+
+    Parameters:
+        name: Name for the ranker
+        p: Duplicate penalty
+    */
+    DuplicatePenaltyTwoLetterRanker(std::string_view name, int p);
+
+    /*
     Computes the rank of a word as described in the class comment.
 
     Parameters:
@@ -54,11 +63,6 @@ public:
         The rank as described above.
     */
     virtual int Rank(std::string_view word, unsigned short guess) const override;
-
-    /*
-    Returns the name of this ranking scheme.
-    */
-    virtual std::string Name() const override;
 
 private:
     // Duplicate penalty as described above

@@ -4,13 +4,19 @@
 
 #include "random_ranker.h"
 #include <ctime>
+#include <string>
 
-RandomRanker::RandomRanker()
+RandomRanker::RandomRanker(): AbstractRanker("RandomRanker")
 {
     srand(time(NULL));
 }
 
-RandomRanker::RandomRanker(unsigned int seed)
+RandomRanker::RandomRanker(unsigned int seed): AbstractRanker("RandomRanker")
+{
+    srand(seed);
+}
+
+RandomRanker::RandomRanker(std::string_view name, unsigned int seed): AbstractRanker(name)
 {
     srand(seed);
 }
@@ -23,9 +29,4 @@ void RandomRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 int RandomRanker::Rank(std::string_view word, unsigned short guess) const
 {
     return rand();
-}
-
-std::string RandomRanker::Name() const
-{
-    return "RandomRanker";
 }

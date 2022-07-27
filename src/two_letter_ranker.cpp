@@ -10,7 +10,9 @@
 #include <iostream>
 #include <limits>
 
-TwoLetterRanker::TwoLetterRanker() {}
+TwoLetterRanker::TwoLetterRanker() : AbstractRanker("TwoLetterRanker") {}
+
+TwoLetterRanker::TwoLetterRanker(std::string_view name) : AbstractRanker(name) {}
 
 void TwoLetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {
@@ -65,11 +67,6 @@ int TwoLetterRanker::Rank(std::string_view word, unsigned short guess) const
         rank += ranking.find(std::string(word.substr(i, 2)))->second;
     }
     return rank;
-}
-
-std::string TwoLetterRanker::Name() const
-{
-    return "TwoLetterRanker";
 }
 
 int TwoLetterRanker::GetRank(std::string_view substr) const

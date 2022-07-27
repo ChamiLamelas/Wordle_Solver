@@ -31,6 +31,14 @@ public:
     LetterRanker();
 
     /*
+    Constructs a LetterRanker with a name.
+
+    Parameters:
+        name: Name for the ranker
+    */
+    LetterRanker(std::string_view name);
+
+    /*
     Sets up a LetterRanker to rank based on the currently eligible words.
 
     In particular, each letter is ranked based on its frequency in the eligible
@@ -55,11 +63,6 @@ public:
         The rank as computed above.
     */
     virtual int Rank(std::string_view word, unsigned short guess) const override;
-
-    /*
-    Returns the name of this ranking scheme.
-    */
-    virtual std::string Name() const override;
 
     /*
     Gets the rank of a letter currently stored by the ranker.

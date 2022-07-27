@@ -32,6 +32,14 @@ public:
     TwoLetterRanker();
 
     /*
+    Constructs a TwoLetterRanker given a name.
+
+    Parameters:
+        name: Name for the ranker
+    */
+    TwoLetterRanker(std::string_view name);
+
+    /*
     Sets up a TwoLetterRanker to rank based on the currently eligible words.
 
     In particular, each two letter substring is ranked based on its frequency 
@@ -56,11 +64,6 @@ public:
         The rank as computed above.
     */
     virtual int Rank(std::string_view word, unsigned short guess) const override;
-
-    /*
-    Returns the name of this ranking scheme.
-    */
-    virtual std::string Name() const override;
 
     /*
     Gets the rank of a two letter substring currently stored by the ranker.

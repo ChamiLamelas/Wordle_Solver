@@ -52,6 +52,16 @@ public:
     RestrictedDuplicatePenaltyTwoLetterRanker(int p, unsigned short ng);
 
     /*
+    Constructs a RestrictedDuplicatePenaltyLetterRanker with a penalty and number of guesses to penalize duplicates.
+
+    Parameters:
+        name: Name for the ranker
+        p: Duplicate penalty
+        ng: Number of guesses to penalize duplicate.
+    */
+    RestrictedDuplicatePenaltyTwoLetterRanker(std::string_view name, int p, unsigned short ng);
+
+    /*
     Computes the rank of a word as described in the class comment.
 
     Parameters:
@@ -62,11 +72,6 @@ public:
         The rank as described above.
     */
     int Rank(std::string_view word, unsigned short guess) const override;
-
-    /*
-    Returns the name of this ranking scheme.
-    */
-    std::string Name() const override;
 
 private:
     // The number of guesses for which duplicates will be penalized

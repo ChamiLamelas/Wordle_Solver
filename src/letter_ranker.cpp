@@ -9,7 +9,9 @@
 #include <algorithm>
 #include <limits>
 
-LetterRanker::LetterRanker(){};
+LetterRanker::LetterRanker(): AbstractRanker("LetterRanker") {}
+
+LetterRanker::LetterRanker(std::string_view name): AbstractRanker(name) {}
 
 void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {
@@ -65,11 +67,6 @@ int LetterRanker::Rank(std::string_view word, unsigned short guess) const
         rank += ranking.find(c)->second;
     }
     return rank;
-}
-
-std::string LetterRanker::Name() const
-{
-    return "LetterRanker";
 }
 
 int LetterRanker::GetRank(char letter) const
