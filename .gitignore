@@ -1,6 +1,7 @@
 # Configuration files
 .vscode/
 *-temp.txt
+*.drawio
 
 # Prerequisites
 *.d
