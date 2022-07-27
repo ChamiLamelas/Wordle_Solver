@@ -17,9 +17,9 @@ You will need the following software.
 ### Installing
 
 Follow the instructions in the following three sections [here](https://github.com/ChamiLamelas/Cpp_Review/blob/main/README.md):
-- [Installation of C++ Compilers (Windows 10)](https://github.com/ChamiLamelas/Cpp_Review/blob/main/README.md#installation-of-c-compilers-windows-10)
-- [Setup of Visual Studio Code](https://github.com/ChamiLamelas/Cpp_Review/blob/main/README.md#setup-of-visual-studio-code)
-- [Building and Running C++ Program](https://github.com/ChamiLamelas/Cpp_Review/blob/main/README.md#building-and-running-c-program)
+- Installation of C++ Compilers (Windows 10)
+- Setup of Visual Studio Code
+- Building and Running C++ Program
 
 ## Running
 
@@ -40,12 +40,12 @@ One can easily add additional ranking schemes provided with the `BaseRanker` abs
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE.md) - see the [LICENSE.md](LICENSE.md) file for
+This project is licensed under the [MIT License](LICENSE) - see the [LICENSE](LICENSE) file for
 details.
 
 ## Acknowledgments
 
   - I tried to incorporate as many of the concepts covered in my [C++ Review](https://github.com/ChamiLamelas/Cpp_Review).
   - I got the Wordle words till July 2022 from [this Medium article](https://medium.com/@owenyin/here-lies-wordle-2021-2027-full-answer-list-52017ee99e86)
-  - I initially used [this word list](https://medium.com/@owenyin/here-lies-wordle-2021-2027-full-answer-list-52017ee99e86) from [tabatkins](https://github.com/tabatkins) as my wordle dictionary, but found it was missing at least three words (see [this issue](https://github.com/tabatkins/wordle-list/issues/10)). I later used [this word list](https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93) from [dracos](https://gist.github.com/dracos).
+  - I initially used [this word list](https://github.com/tabatkins/wordle-list) from [tabatkins](https://github.com/tabatkins) as my wordle dictionary, but found it was missing at least three words (see [this issue](https://github.com/tabatkins/wordle-list/issues/10)). I later used [this word list](https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93) from [dracos](https://gist.github.com/dracos).
   - I used [this README template](https://github.com/PurpleBooth/a-good-readme-template#readme) from [PurpleBooth](https://github.com/PurpleBooth).
