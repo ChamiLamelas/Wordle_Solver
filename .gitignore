@@ -1,7 +1,6 @@
 # Configuration files
 .vscode/
-data/tabatkins_github_words-temp-temp.txt
-data/tabatkins_github_words-temp.txt
+*-temp.txt
 
 # Prerequisites
 *.d
