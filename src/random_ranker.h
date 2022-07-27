@@ -52,20 +52,22 @@ public:
 
     Parameters:
         eligible_fp: Path to the remaining eligible words.
+        guess: What guess this set up will be for (1...6).
     */
-    void SetUp(const std::string &eligible_fp) override;
+    void SetUp(const std::string &eligible_fp, unsigned short guess) override;
 
     /*
     Provides a random rank for a word.
 
     Parameters:
         word: Word to rank.
+        guess: What guess this ranking will be for (1...6).
 
     Returns:
         Random rank between 0 and RAND_MAX see
         https://cplusplus.com/reference/cstdlib/RAND_MAX/.
     */
-    int Rank(std::string_view word) const override;
+    int Rank(std::string_view word, unsigned short guess) const override;
 
     /*
     Returns the name of this ranking scheme.

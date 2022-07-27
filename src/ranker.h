@@ -41,23 +41,26 @@ public:
 
     Parameters:
         eligible_fp: Path to the remaining eligible words.
+        guess: What guess this set up will be for (1...6).
     */
-    virtual void SetUp(const std::string &eligible_fp) = 0;
+    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) = 0;
 
     /*
-    Provides the ranking for a word.
+    Provides the ranking for a word for a certain guess.
 
     This function calculates the rank for a word. A rank can be any integer.
-    WordleSolver will choose the eligible word w where Rank(w) is the lowest.
-    It is assumed the word has been seen in SetUp.
+    WordleSolver will choose the eligible word w for guess g where Rank(w, g) 
+    is the lowest. It is assumed w was seen in the most recent call to SetUp
+    which also received g.
 
     Parameters:
         word: Word to rank.
+        guess: What guess this ranking will be for (1...6).
 
     Returns:
         Rank of word.
     */
-    virtual int Rank(std::string_view word) const = 0;
+    virtual int Rank(std::string_view word, unsigned short guess) const = 0;
 
     /*
     Provides a name for the ranker.

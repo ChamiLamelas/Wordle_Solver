@@ -3,7 +3,7 @@
 
 DuplicatePenaltyLetterRanker::DuplicatePenaltyLetterRanker(int p) : duplicate_penalty(p) {}
 
-int DuplicatePenaltyLetterRanker::Rank(std::string_view word) const
+int DuplicatePenaltyLetterRanker::Rank(std::string_view word, unsigned short guess) const
 {
     // Sums rank of letters in word using GetCount, identifies duplicates
     std::unordered_set<char> uniq_letters;

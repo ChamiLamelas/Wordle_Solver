@@ -3,7 +3,7 @@
 
 DuplicatePenaltyTwoLetterRanker::DuplicatePenaltyTwoLetterRanker(int p) : duplicate_penalty(p) {}
 
-int DuplicatePenaltyTwoLetterRanker::Rank(std::string_view word) const
+int DuplicatePenaltyTwoLetterRanker::Rank(std::string_view word, unsigned short guess) const
 {
     std::unordered_set<char> uniq_letters{word[0]};
     // Sums rank of substrings in word using map

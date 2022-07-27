@@ -15,12 +15,12 @@ RandomRanker::RandomRanker(unsigned int seed)
     srand(seed);
 }
 
-void RandomRanker::SetUp(const std::string &eligible_fp)
+void RandomRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {
     // Have nothing to do
 }
 
-int RandomRanker::Rank(std::string_view word) const
+int RandomRanker::Rank(std::string_view word, unsigned short guess) const
 {
     return rand();
 }

@@ -8,8 +8,8 @@ class TwoLetterRanker : public BaseRanker
 {
 public:
     TwoLetterRanker();
-    virtual void SetUp(const std::string &eligible_fp) override;
-    virtual int Rank(std::string_view word) const override;
+    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    virtual int Rank(std::string_view word, unsigned short guess) const override;
     virtual std::string Name() const override;
     virtual int GetRank(std::string_view substr) const;
     virtual int GetCount(std::string_view substr) const;

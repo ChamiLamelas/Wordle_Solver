@@ -16,7 +16,7 @@ void DisplayInfo(std::vector<std::string> v, std::unordered_map<std::string, int
 
 TwoLetterRanker::TwoLetterRanker() {}
 
-void TwoLetterRanker::SetUp(const std::string &eligible_fp)
+void TwoLetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {
     std::ifstream eligible_file(eligible_fp, std::ios_base::in);
     if (!eligible_file.is_open())
@@ -60,7 +60,7 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp)
     // DisplayInfo(keys, counts);
 }
 
-int TwoLetterRanker::Rank(std::string_view word) const
+int TwoLetterRanker::Rank(std::string_view word, unsigned short guess) const
 {
     // Sums rank of substrings in word using map
     int rank{0};

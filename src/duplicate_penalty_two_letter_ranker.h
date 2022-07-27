@@ -3,12 +3,12 @@
 
 #include "two_letter_ranker.h"
 
-class DuplicatePenaltyTwoLetterRanker final : public TwoLetterRanker
+class DuplicatePenaltyTwoLetterRanker : public TwoLetterRanker
 {
 public:
     DuplicatePenaltyTwoLetterRanker(int p);
-    int Rank(std::string_view word) const override;
-    std::string Name() const override;
+    virtual int Rank(std::string_view word, unsigned short guess) const override;
+    virtual std::string Name() const override;
 
 private:
     int duplicate_penalty;

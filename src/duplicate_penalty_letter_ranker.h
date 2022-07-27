@@ -31,7 +31,7 @@ DuplicatePenaltyLetterRanker::Rank(w) = LetterRanker::Rank(w) + penalty * (# dup
 
 This class provides additional functions as declared in LetterRanker, only some are overriden.
 */
-class DuplicatePenaltyLetterRanker final : public LetterRanker
+class DuplicatePenaltyLetterRanker : public LetterRanker
 {
 public:
     /*
@@ -47,16 +47,17 @@ public:
 
     Parameters:
         word: Word to rank.
+        guess: What guess this ranking will be for (1...6).
 
     Returns:
         The rank as described above.
     */
-    int Rank(std::string_view word) const override;
+    virtual int Rank(std::string_view word, unsigned short guess) const override;
 
     /*
     Returns the name of this ranking scheme.
     */
-    std::string Name() const override;
+    virtual std::string Name() const override;
 
 private:
     // Duplicate penalty as described above

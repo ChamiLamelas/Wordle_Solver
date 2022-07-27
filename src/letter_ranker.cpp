@@ -11,7 +11,7 @@
 
 LetterRanker::LetterRanker(){};
 
-void LetterRanker::SetUp(const std::string &eligible_fp)
+void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {
     std::ifstream eligible_file(eligible_fp, std::ios_base::in);
     if (!eligible_file.is_open())
@@ -56,7 +56,7 @@ void LetterRanker::SetUp(const std::string &eligible_fp)
     }
 }
 
-int LetterRanker::Rank(std::string_view word) const
+int LetterRanker::Rank(std::string_view word, unsigned short guess) const
 {
     // Sums rank of letters in word using map
     int rank{0};
