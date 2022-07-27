@@ -29,6 +29,10 @@ Once this has been done, pressing Ctrl+Shift+B builds `wordle_solver.exe` which 
 
 One can easily add additional ranking schemes provided with the `AbstractRanker` abstract data type defined [here](src/ranker.h) and test them either via user mode or via the evaluation header in `main.cpp`. One could also add additional evaluation metrics.
 
+## Additional Information
+
+Please see [the UML diagram](uml_diagram.png) and the documentation in header and implementation files.
+
 ## Built With
 
   - [Visual Studio Code](https://code.visualstudio.com/)
