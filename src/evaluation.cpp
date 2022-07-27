@@ -120,7 +120,7 @@ void GetStatistics(const std::vector<short> &guess_counts, double &mean, double 
     std_dev = std::sqrt(dev_sq_total / (guess_counts.size() - fail_count));
 }
 
-void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<BaseRanker *> &rankers, const std::string &words_fp)
+void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<AbstractRanker *> &rankers, const std::string &words_fp)
 {
     // Read-only file stream to words
     std::ifstream words_file(words_fp, std::ios_base::in);

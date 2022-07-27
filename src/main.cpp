@@ -31,7 +31,7 @@ int main()
     RestrictedDuplicatePenaltyTwoLetterRanker rdptlr(100, 2);
 
     std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt"};
-    std::vector<BaseRanker *> rankers{&rr};
+    std::vector<AbstractRanker *> rankers{&rr};
 
     try
     {

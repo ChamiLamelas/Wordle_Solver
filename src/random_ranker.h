@@ -2,7 +2,7 @@
 Header for RandomRanker.
 
 This file defines the RandomRanker class. This class is a simple
-derived class of BaseRanker. This ranking scheme results in the
+derived class of AbstractRanker. This ranking scheme results in the
 WordleSolver selecting eligible words randomly when guessing.
 
 Author: Chami Lamelas
@@ -17,12 +17,12 @@ Date: Summer 2022
 /*
 Class that ranks eligible words randomly.
 
-This class derives BaseRanker and prvoides random ranks for words. This
-class provides a simple implementation of BaseRanker and also a useful
+This class derives AbstractRanker and prvoides random ranks for words. This
+class provides a simple implementation of AbstractRanker and also a useful
 baseline for comparing more advanced ranking schemes. This class cannot
 be derived from.
 */
-class RandomRanker final : public BaseRanker
+class RandomRanker final : public AbstractRanker
 {
 public:
     /*

@@ -3,7 +3,7 @@ Header for exceptions.
 
 This file holds the definition of WordleSolverException, which
 is the only exception type used by the derived classes of
-BaseRanker, WordleSolver, and the functions of the evaluation
+AbstractRanker, WordleSolver, and the functions of the evaluation
 header.
 
 Author: Chami Lamelas
@@ -21,7 +21,7 @@ Date: Summer 2022
 WordleSolver exception class.
 
 This is a custom exception class that is used to report errors.
-This class is created to distinguish errors in BaseRanker,
+This class is created to distinguish errors in AbstractRanker,
 WordleSolver, and the evaluation header from exceptions raised
 by C++.
 */

@@ -73,11 +73,11 @@ GetStatistics() and then are written to a file.
 Parameters:
     dictionary_fps: Container of dictionary filepaths. Will be cutoff in output file if
     over 40 characters.
-    rankers: Container of ranking schemes specified via BaseRanker pointers.
+    rankers: Container of ranking schemes specified via AbstractRanker pointers.
     words_fp: Filepath of 5-letter words to evaluate solvers on. Assumed words in this 
     filecan be stored in memory.
     output_fp: Filepath where output should go.
 */
-void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<BaseRanker *> &rankers, const std::string &words_fp);
+void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vector<AbstractRanker *> &rankers, const std::string &words_fp);
 
 #endif

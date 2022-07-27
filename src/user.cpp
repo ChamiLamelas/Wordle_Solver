@@ -48,7 +48,7 @@ std::string ReadFeedback()
     return feedback;
 }
 
-void RunUserMode(std::string_view dictionary_fp, BaseRanker *ranker)
+void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker)
 {
     WordleSolver solver(dictionary_fp, ranker);
     std::string guess;

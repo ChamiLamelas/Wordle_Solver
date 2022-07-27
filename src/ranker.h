@@ -1,7 +1,7 @@
 /*
-Header for BaseRanker.
+Header for AbstractRanker.
 
-This file declares the BaseRanker abstract class. It specifies the necessary
+This file declares the AbstractRanker abstract class. It specifies the necessary
 methods for its derived classes which will implement specific word ranking
 strategies that are used by WordleSolver.
 
@@ -18,18 +18,18 @@ Date: Summer 2022
 /*
 Abstract class that defines the necessary behavior of a ranking scheme.
 
-The derived classes of BaseRanker will implement particular ranking schemes.
+The derived classes of AbstractRanker will implement particular ranking schemes.
 */
-class BaseRanker
+class AbstractRanker
 {
 public:
     /*
-    BaseRanker destructor, not user called.
+    AbstractRanker destructor, not user called.
 
     Default destructor, declared virtual to ensure proper destruction of objects of
     derived classes.
     */
-    virtual ~BaseRanker(){};
+    virtual ~AbstractRanker(){};
 
     /*
     Sets up the ranking scheme.

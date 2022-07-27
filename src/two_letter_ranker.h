@@ -2,7 +2,7 @@
 Header for TwoLetterRanker.
 
 This file defines the TwoLetterRanker class. This class derives
-BaseRanker where the rank a word is derived from the frequency
+AbstractRanker where the rank a word is derived from the frequency
 of its two letter substrings in the eligible words.
 
 Author: Chami Lamelas
@@ -23,7 +23,7 @@ wordle solutions, a guess that is made up of two letter substrings that
 appear frequently in eligible words is more likely to contain letters 
 in the solution word.
 */
-class TwoLetterRanker : public BaseRanker
+class TwoLetterRanker : public AbstractRanker
 {
 public:
     /*

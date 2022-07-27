@@ -3,7 +3,7 @@ Header for WordleSolver.
 
 This file declares the WordleSolver class which is used to solve the Wordle game
 supplied a dictionary of 5 letter words that is a superset of the wordle words
-and a ranker specified as a subclass of the abstract class BaseRanker.
+and a ranker specified as a subclass of the abstract class AbstractRanker.
 
 Author: Chami Lamelas
 Date: Summer 2022
@@ -21,10 +21,10 @@ Date: Summer 2022
 /*
 Solver for Wordle game.
 
-Uses a dictionary of 5 letter words and a BaseRanker to guess
-solutions to the Wordle game. Whenever the BaseRanker is used
-to rank words using BaseRanker::Rank, it is guaranteed that
-BaseRanker::SetUp will be called with the filepath to the most
+Uses a dictionary of 5 letter words and a AbstractRanker to guess
+solutions to the Wordle game. Whenever the AbstractRanker is used
+to rank words using AbstractRanker::Rank, it is guaranteed that
+AbstractRanker::SetUp will be called with the filepath to the most
 up to date list of eligible words.
 */
 class WordleSolver
@@ -38,10 +38,10 @@ public:
         a 5-letter word set that is a superset of the wordle words.
         Each word should be on a separate line.
 
-        r : Pointer to BaseRanker that points to a derived class
+        r : Pointer to AbstractRanker that points to a derived class
         object that implements a ranking scheme.
     */
-    WordleSolver(std::string_view d_fp, BaseRanker *r);
+    WordleSolver(std::string_view d_fp, AbstractRanker *r);
 
     /*
     Returns an initial guess.
@@ -69,15 +69,15 @@ private:
     std::string dictionary_fp;
 
     /*
-    Pointer to the BaseRanker used to make guesses. Pointer combined with
-    virtual BaseRanker functions enables dynamic binding.
+    Pointer to the AbstractRanker used to make guesses. Pointer combined with
+    virtual AbstractRanker functions enables dynamic binding.
     */
-    BaseRanker *ranker;
+    AbstractRanker *ranker;
 
     /*
     Stores the current number of guesses the solver has made. Before any
     guess has been made, num_guesses = 0. Otherwise, it's 1-6. Currently
-    not used, but plan is to allow BaseRanker::Rank() to take a word and
+    not used, but plan is to allow AbstractRanker::Rank() to take a word and
     the current number of guesses that have been made. This could be
     used in incorporating penalties for duplicates when ranking words.
     */

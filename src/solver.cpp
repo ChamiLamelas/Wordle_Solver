@@ -268,7 +268,7 @@ public:
 const std::string WordleSolver::FEEDBACK_PLACEHOLDER = "";
 const std::string WordleSolver::ELIGIBLE_FP_SUFFIX = "-temp";
 
-WordleSolver::WordleSolver(std::string_view d_fp, BaseRanker *r) : num_guesses(0), ranker(r), dictionary_fp(d_fp), eligible_fp(InsertFilePathSuffix(dictionary_fp, WordleSolver::ELIGIBLE_FP_SUFFIX)) {}
+WordleSolver::WordleSolver(std::string_view d_fp, AbstractRanker *r) : num_guesses(0), ranker(r), dictionary_fp(d_fp), eligible_fp(InsertFilePathSuffix(dictionary_fp, WordleSolver::ELIGIBLE_FP_SUFFIX)) {}
 
 std::string WordleSolver::Guess()
 {
@@ -298,7 +298,7 @@ std::string WordleSolver::Guess(std::string_view feedback)
         throw WordleSolverException("Could not open eligible words");
     }
 
-    // Prepare ranker (part of contract between WordleSolver and BaseRanker)
+    // Prepare ranker (part of contract between WordleSolver and AbstractRanker)
     ranker->SetUp(eligible_fp, num_guesses + 1);
 
     // word with rank = current_min_rank

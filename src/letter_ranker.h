@@ -2,7 +2,7 @@
 Header for LetterRanker.
 
 This file defines the LetterRanker class. This class derives
-BaseRanker where the rank a word is derived from the frequency
+AbstractRanker where the rank a word is derived from the frequency
 of its letters in the eligible words.
 
 Author: Chami Lamelas
@@ -22,7 +22,7 @@ Assuming that the wordle solution is selected randomly from the list of
 wordle solutions, a guess that is made up of letters that appear frequently
 in eligible words is more likely to contain letters in the solution word.
 */
-class LetterRanker : public BaseRanker
+class LetterRanker : public AbstractRanker
 {
 public:
     /*

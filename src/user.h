@@ -26,6 +26,6 @@ Parameters:
     dictionary_fp: Dictionary filepath.
     ranker: Specifies ranking scheme.
 */
-void RunUserMode(std::string_view dictionary_fp, BaseRanker *ranker);
+void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker);
 
 #endif
