@@ -22,20 +22,22 @@ use of evaluation header.
 */
 int main()
 {
-    RandomRanker rr(1);
-    LetterRanker lr;
-    DuplicatePenaltyLetterRanker dplr(100);
-    TwoLetterRanker tlr;
-    DuplicatePenaltyTwoLetterRanker dptlr(100);
-    RestrictedDuplicatePenaltyLetterRanker rdplr(100, 2);
-    RestrictedDuplicatePenaltyTwoLetterRanker rdptlr(100, 2);
+    RandomRanker rr("RandomRanker(1)", 1);
+    LetterRanker lr; // Default name ok
+    DuplicatePenaltyLetterRanker dplr("DuplicatePenaltyLetterRanker(100)", 100);
+    TwoLetterRanker tlr; // Default name ok
+    DuplicatePenaltyTwoLetterRanker dptlr("DuplicatePenaltyTwoLetterRanker(100)", 100);
+    RestrictedDuplicatePenaltyLetterRanker rdplr2("RestrictedDuplicatePenaltyLetterRanker(100,2)", 100, 2);
+    RestrictedDuplicatePenaltyTwoLetterRanker rdptlr2("RestrictedDuplicatePenaltyTwoLetterRanker(100,2)", 100, 2);
+    RestrictedDuplicatePenaltyLetterRanker rdplr3("RestrictedDuplicatePenaltyLetterRanker(100,3)", 100, 3);
+    RestrictedDuplicatePenaltyTwoLetterRanker rdptlr3("RestrictedDuplicatePenaltyTwoLetterRanker(100,3)", 100, 3);
 
     std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt"};
-    std::vector<AbstractRanker *> rankers{&rr};
+    std::vector<AbstractRanker *> rankers{&rr, &lr, &dplr, &tlr, &dptlr, &rdplr2, &rdptlr2, &rdplr3, &rdptlr3};
 
     try
     {
-        // RunUserMode(dictionary_fps[0], rankers[0]);
+        // RunUserMode(dictionary_fps[0], &rdptlr2);
         GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt");
     }
     catch (const WordleSolverException &e)
