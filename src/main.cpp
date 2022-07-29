@@ -34,14 +34,14 @@ int main()
     RestrictedDuplicatePenaltyThreeLetterRanker r13("RestrictedDuplicatePenaltyThreeLetterRanker(100,3)", 100, 3);
 
     // 
-    std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt"};
+    std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt", "data/medium_wordle_words_todate.txt"};
     // &r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13
-    std::vector<AbstractRanker *> rankers{&r4};
+    std::vector<AbstractRanker *> rankers{&r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13};
 
     try
     {
-        WordleSolver solver(dictionary_fps[0], &r4, true);  
-        std::cout << "Evaluation result: " << Evaluate(solver, "cigar") << std::endl;
+        // WordleSolver solver(dictionary_fps[1], &r9, true);  
+        // std::cout << "Evaluation result: " << Evaluate(solver, "lapse") << std::endl;
         // RunUserMode(dictionary_fps[0], &lr, true);
         // GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt");
     }
