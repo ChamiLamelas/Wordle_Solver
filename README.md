@@ -53,3 +53,4 @@ details.
   - I got the Wordle words till July 2022 from [this Medium article](https://medium.com/@owenyin/here-lies-wordle-2021-2027-full-answer-list-52017ee99e86)
   - I initially used [this word list](https://github.com/tabatkins/wordle-list) from [tabatkins](https://github.com/tabatkins) as my wordle dictionary, but found it was missing at least three words (see [this issue](https://github.com/tabatkins/wordle-list/issues/10)). I later used [this word list](https://gist.github.com/dracos/dd0668f281e685bad51479e5acaadb93) from [dracos](https://gist.github.com/dracos).
   - I used [this README template](https://github.com/PurpleBooth/a-good-readme-template#readme) from [PurpleBooth](https://github.com/PurpleBooth).
+  - I got five letter frequencies from [this Kaggle dataset](https://www.kaggle.com/datasets/rtatman/english-word-frequency?resource=download).
