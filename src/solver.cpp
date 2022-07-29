@@ -8,6 +8,9 @@
 #include <iostream>
 #include "exceptions.h"
 #include "file_ops.h"
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 
 class WordleSolver::Private
 {
@@ -51,6 +54,11 @@ public:
             std::getline(eligible_file_r, word);
             if (!predicate(word))
             {
+                if (self.debug_mode)
+                {
+                    Private::DebugLog(self, "Removed word [" + word + "]");
+                }
+
                 continue;
             }
 
@@ -121,6 +129,11 @@ public:
             // this found only on the previous guess we need to adjust eligible words.
             if (*fitr == 'g' && self.found_indices.find(idx) == self.found_indices.end())
             {
+                if (self.debug_mode)
+                {
+                    Private::DebugLog(self, "Running Green Predicate for idx [" + std::to_string(idx) + "]");
+                }
+
                 // Green predicate: Keep only words of eligible words that have prev_guess[idx]
                 // at idx
                 Private::KeepOnPredicate(self, [&self, &idx](std::string_view word)
@@ -141,6 +154,11 @@ public:
             auto idx{std::distance(feedback.cbegin(), fitr)};
             if (*fitr == 'y')
             {
+                if (self.debug_mode)
+                {
+                    Private::DebugLog(self, "Running Yellow Predicate for idx [" + std::to_string(idx) + "]");
+                }
+
                 // Mark letter has been found as yellow (used in black predicate)
                 yellow.insert(self.prev_guess[idx]);
 
@@ -169,6 +187,11 @@ public:
             }
             else if (*fitr == 'b')
             {
+                if (self.debug_mode)
+                {
+                    Private::DebugLog(self, "Running Black Predicate for idx [" + std::to_string(idx) + "]");
+                }
+
                 Private::KeepOnPredicate(self, [&self, &idx, &yellow](std::string_view word)
                                          {
                 // Black predicate: If prev_guess[idx] was seen at an earlier index and was 
@@ -205,23 +228,6 @@ public:
             }
         }
     }
-
-    // static bool CheckEligibleForWord(WordleSolver &self, std::string_view target) {
-    //     std::ifstream eligible_file(self.eligible_fp, std::ios_base::in);
-    //     if (!eligible_file.is_open()) {
-    //         throw WordleSolverException("Could not open eligible file for reading");
-    //     }
-    //     std::string word;
-    //     bool out{false};
-    //     while (eligible_file.good()) {
-    //         std::getline(eligible_file, word);
-    //         if (word == target) {
-    //             out = true;
-    //         }
-    //     }
-    //     eligible_file.close();
-    //     return out;
-    // }
 
     // Copies dictionary into eligible words file
     static void CopyDictionary(WordleSolver &self)
@@ -262,13 +268,66 @@ public:
         dictionary_file.close();
         eligible_file.close();
     }
+
+    static void DebugLog(WordleSolver &self, std::string_view message)
+    {
+        // https://stackoverflow.com/a/2393389
+        std::ofstream log_file;
+        log_file.open(self.debug_log_fp, std::ios_base::app);
+        if (!log_file.is_open())
+        {
+            throw WordleSolverException("Could not open log file for logging");
+        }
+        log_file << message << std::endl;
+        log_file.close();
+    }
+
+    static void AutoDebugLogEligibleWords(WordleSolver &self)
+    {
+        std::ofstream log_file;
+        log_file.open(self.debug_log_fp, std::ios_base::app);
+        if (!log_file.is_open())
+        {
+            throw WordleSolverException("Could not open log file for logging eligible words");
+        }
+        std::ifstream eligible_file(self.eligible_fp, std::ios_base::in);
+        if (!eligible_file.is_open())
+        {
+            throw WordleSolverException("Could not open " + self.eligible_fp + " for reading");
+        }
+        log_file << "\nEligible words: " << std::endl;
+        std::string word;
+        while (eligible_file.good())
+        {
+            std::getline(eligible_file, word);
+            log_file << word << std::endl;
+        }
+        log_file.close();
+    }
 };
 
 // Feedback could never be "", also see: https://stackoverflow.com/a/2605559
 const std::string WordleSolver::FEEDBACK_PLACEHOLDER = "";
+
 const std::string WordleSolver::ELIGIBLE_FP_SUFFIX = "-temp";
 
-WordleSolver::WordleSolver(std::string_view d_fp, AbstractRanker *r) : num_guesses(0), ranker(r), dictionary_fp(d_fp), eligible_fp(InsertFilePathSuffix(dictionary_fp, WordleSolver::ELIGIBLE_FP_SUFFIX)) {}
+const std::string WordleSolver::LOG_FP_SUFFIX = "-log";
+
+WordleSolver::WordleSolver(std::string_view d_fp, AbstractRanker *r) : WordleSolver(d_fp, r, false) {}
+
+WordleSolver::WordleSolver(std::string_view d_fp, AbstractRanker *r, bool dm) : num_guesses(0), ranker(r), dictionary_fp(d_fp), eligible_fp(InsertFilePathSuffix(dictionary_fp, WordleSolver::ELIGIBLE_FP_SUFFIX)), debug_mode(dm)
+{
+    if (dm)
+    {
+        // https://stackoverflow.com/a/16358111
+        auto t{std::time(nullptr)};
+        auto tm{std::localtime(&t)};
+        std::ostringstream oss;
+        oss << std::put_time(tm, "%d-%m-%Y_%H-%M-%S");
+        auto suffix{"-" + oss.str() + WordleSolver::LOG_FP_SUFFIX};
+        debug_log_fp = InsertFilePathSuffix(dictionary_fp, suffix);
+    }
+}
 
 std::string WordleSolver::Guess()
 {
@@ -288,7 +347,15 @@ std::string WordleSolver::Guess(std::string_view feedback)
     }
     else // When we have feedback, use it
     {
+        if (debug_mode)
+        {
+            Private::DebugLog(*this, "Parsing Feedback: " + std::string(feedback));
+        }
         Private::UpdateEligibleWords(*this, feedback);
+        if (debug_mode)
+        {
+            Private::AutoDebugLogEligibleWords(*this);
+        }
     }
 
     // Read-only file stream for eligible words
@@ -300,6 +367,12 @@ std::string WordleSolver::Guess(std::string_view feedback)
 
     // Prepare ranker (part of contract between WordleSolver and AbstractRanker)
     ranker->SetUp(eligible_fp, num_guesses + 1);
+
+    if (debug_mode)
+    {
+        Private::DebugLog(*this, "Ranker SetUp DebugInfo:");
+        Private::DebugLog(*this, ranker->GetDebugInfo());
+    }
 
     // word with rank = current_min_rank
     std::string current_guess;
@@ -334,5 +407,11 @@ std::string WordleSolver::Guess(std::string_view feedback)
     // Mark we have made guess and store guess to make future guesses
     num_guesses++;
     prev_guess = current_guess;
+
+    if (debug_mode)
+    {
+        Private::DebugLog(*this, "Guess " + std::to_string(num_guesses) + ": " + current_guess);
+    }
+
     return current_guess;
 }

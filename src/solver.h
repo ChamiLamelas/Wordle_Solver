@@ -25,13 +25,24 @@ Uses a dictionary of 5 letter words and a AbstractRanker to guess
 solutions to the Wordle game. Whenever the AbstractRanker is used
 to rank words using AbstractRanker::Rank, it is guaranteed that
 AbstractRanker::SetUp will be called with the filepath to the most
-up to date list of eligible words.
+up to date list of eligible words. Furthermore, it is guaranteed
+when run in debug mode that AbstractRanker::GetDebugInfo will be
+called after AbstractRanker::SetUp. These conditions make up
+a contract between WordleSolver and AbstractRanker that will
+allow for the design of derived classes of AbstractRanker.
+
+The WordleSolver solves the game following the hard mode requirements,
+that is that words that fail to match the prior feedback are no
+longer eligible to be guesses. For instance, the game would never
+guess "audio" after receiving the feedback "bgggg" for "creed".
 */
 class WordleSolver
 {
 public:
     /*
     Creates a WordleSolver given a dictionary and ranking scheme.
+
+    By default, the solver runs not in debug mode.
 
     Parameters:
         d_fp : Path to dictionary file. Dictionary file should have
@@ -42,6 +53,26 @@ public:
         object that implements a ranking scheme.
     */
     WordleSolver(std::string_view d_fp, AbstractRanker *r);
+
+    /*
+    Creates a WordleSolver given a dictionary, ranking scheme, and debug mode setting.
+
+    Note, running in debug mode will be noticeably slower and will generate
+    a time associated log file. This should be used to analyze the performance
+    of a WordleSolver in a highly restricted scenario such as guessing a single
+    word. It is the user's responsibility to delete log files.
+
+    Parameters:
+        d_fp : Path to dictionary file. Dictionary file should have
+        a 5-letter word set that is a superset of the wordle words.
+        Each word should be on a separate line.
+
+        r : Pointer to AbstractRanker that points to a derived class
+        object that implements a ranking scheme.
+
+        dm : Debug mode.
+    */
+    WordleSolver(std::string_view d_fp, AbstractRanker *r, bool dm);
 
     /*
     Returns an initial guess.
@@ -118,6 +149,18 @@ private:
     for the eligible words file.
     */
     static const std::string ELIGIBLE_FP_SUFFIX;
+
+    /*
+    Stores the suffix appended to the dictionary filepath before the extension
+    and time for the log file.
+    */
+    static const std::string LOG_FP_SUFFIX;
+
+    // Flag for whether the WordleSolver is running in debug mode.
+    bool debug_mode;
+
+    // Debug log filepath
+    std::string debug_log_fp;
 };
 
 #endif
