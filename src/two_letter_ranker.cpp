@@ -61,9 +61,14 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess
 
     // Update our ranking map (clear removes any substrings that may no longer be in eligible words)
     ranking.clear();
-    for (size_t i{0}; i < substrings.size(); i++)
-    {
-        ranking[substrings[i]] = i + 1;
+    int curr_rank{0};
+    size_t curr_count{SIZE_MAX};
+    for (auto s : substrings) {
+        if (word_counts[s] < curr_count) {
+            curr_rank++;
+            curr_count = word_counts[s];
+        }
+        ranking[s] = curr_rank;
     }
 }
 

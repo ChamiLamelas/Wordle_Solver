@@ -98,7 +98,7 @@ private:
     dictionary may not the best most frequent after the dictionary has
     been reduced via various rounds of feedback.
     */
-    std::unordered_map<char, int> word_counts;
+    std::unordered_map<char, size_t> word_counts;
 
     /*
     Stores the rank (1,2,...) of each letter that appears in the eligible words.

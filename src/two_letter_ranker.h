@@ -100,7 +100,7 @@ private:
     most frequent after the dictionary has been reduced via various rounds
     of feedback.
     */
-    std::unordered_map<std::string, int> word_counts;
+    std::unordered_map<std::string, size_t> word_counts;
 
     /*
     Stores the rank (1,2,...) of each two letter substring that appears
