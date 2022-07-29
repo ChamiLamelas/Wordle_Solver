@@ -171,13 +171,17 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
             {
                 auto idx{std::distance(words.cbegin(), w_itr)};
                 guess_counts[idx] = Evaluate(solver, *w_itr);
+                if (guess_counts[idx] == FAILED)
+                {
+                    std::cout << "Dictionary [" << *dfp_itr << "] Ranker [" << (*rkr_itr)->GetName() << "] failed to guess [" << *w_itr << "]" << std::endl;
+                }
             }
 
             // Compute statistics and write to output file
             GetStatistics(guess_counts, mean, std_dev, fail_count);
-            output_file << std::left << std::setw(40) << *dfp_itr << std::setw(50) << (*rkr_itr)->Name() << std::setw(20)
+            output_file << std::left << std::setw(40) << *dfp_itr << std::setw(50) << (*rkr_itr)->GetName() << std::setw(20)
                         << std::right << mean << std::setw(20) << std_dev << std::setw(20) << (100.0 * fail_count) / words.size() << std::endl;
-            std::cout << "Finished Evaluation of Dictionary [" << *dfp_itr << "] Ranker [" << (*rkr_itr)->Name() << "]" << std::endl;
+            std::cout << "Finished Evaluation of Dictionary [" << *dfp_itr << "] Ranker [" << (*rkr_itr)->GetName() << "]" << std::endl;
         }
     }
     output_file.close();
