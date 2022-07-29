@@ -1,2 +1,2 @@
 Dictionary                              Ranker                                            Mean                SD                  Failure Rate (%)    
-data/dracos_github_words.txt            RestrictedDuplicatePenaltyLetterRanker(100,2)                 3.529412            0.989215            9.814324
+data/dracos_github_words.txt            ThreeLetterRanker                                             3.546269            0.947948           11.140584

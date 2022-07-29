@@ -10,11 +10,8 @@
 #include "random_ranker.h"
 #include "solver.h"
 #include "letter_ranker.h"
-#include "duplicate_penalty_letter_ranker.h"
 #include "two_letter_ranker.h"
-#include "duplicate_penalty_two_letter_ranker.h"
-#include "restricted_duplicate_penalty_letter_ranker.h"
-#include "restricted_duplicate_penalty_two_letter_ranker.h"
+#include "three_letter_ranker.h"
 
 /*
 Main function - by default uses RunUserMode, can alternatively make
@@ -22,24 +19,29 @@ use of evaluation header.
 */
 int main()
 {
-    RandomRanker rr("RandomRanker(1)", 1);
-    LetterRanker lr; // Default name ok
-    DuplicatePenaltyLetterRanker dplr("DuplicatePenaltyLetterRanker(100)", 100);
-    TwoLetterRanker tlr; // Default name ok
-    DuplicatePenaltyTwoLetterRanker dptlr("DuplicatePenaltyTwoLetterRanker(100)", 100);
-    RestrictedDuplicatePenaltyLetterRanker rdplr2("RestrictedDuplicatePenaltyLetterRanker(100,2)", 100, 2);
-    RestrictedDuplicatePenaltyTwoLetterRanker rdptlr2("RestrictedDuplicatePenaltyTwoLetterRanker(100,2)", 100, 2);
-    RestrictedDuplicatePenaltyLetterRanker rdplr3("RestrictedDuplicatePenaltyLetterRanker(100,3)", 100, 3);
-    RestrictedDuplicatePenaltyTwoLetterRanker rdptlr3("RestrictedDuplicatePenaltyTwoLetterRanker(100,3)", 100, 3);
+    RandomRanker r1("RandomRanker(1)", 1);
+    LetterRanker r2;    
+    TwoLetterRanker r3; 
+    ThreeLetterRanker r4;
+    DuplicatePenaltyLetterRanker r5("DuplicatePenaltyLetterRanker(100)", 100);
+    DuplicatePenaltyTwoLetterRanker r6("DuplicatePenaltyTwoLetterRanker(100)", 100);
+    DuplicatePenaltyThreeLetterRanker r7("DuplicatePenaltyThreeLetterRanker(100)", 100);
+    RestrictedDuplicatePenaltyLetterRanker r8("RestrictedDuplicatePenaltyLetterRanker(100,2)", 100, 2);
+    RestrictedDuplicatePenaltyTwoLetterRanker r9("RestrictedDuplicatePenaltyTwoLetterRanker(100,2)", 100, 2);
+    RestrictedDuplicatePenaltyThreeLetterRanker r10("RestrictedDuplicatePenaltyThreeLetterRanker(100,2)", 100, 2);
+    RestrictedDuplicatePenaltyLetterRanker r11("RestrictedDuplicatePenaltyLetterRanker(100,3)", 100, 3);
+    RestrictedDuplicatePenaltyTwoLetterRanker r12("RestrictedDuplicatePenaltyTwoLetterRanker(100,3)", 100, 3);
+    RestrictedDuplicatePenaltyThreeLetterRanker r13("RestrictedDuplicatePenaltyThreeLetterRanker(100,3)", 100, 3);
 
+    // 
     std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt"};
-    // , &dplr, &tlr, &dptlr, &rdplr2, &rdptlr2, &rdplr3, &rdptlr3
-    std::vector<AbstractRanker *> rankers{&rdplr2};
+    // &r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13
+    std::vector<AbstractRanker *> rankers{&r4};
 
     try
     {
-        WordleSolver solver(dictionary_fps[0], &rdplr2, true);
-        std::cout << "Evaluation result: " << Evaluate(solver, "bench") << std::endl;
+        WordleSolver solver(dictionary_fps[0], &r4, true);  
+        std::cout << "Evaluation result: " << Evaluate(solver, "cigar") << std::endl;
         // RunUserMode(dictionary_fps[0], &lr, true);
         // GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt");
     }
