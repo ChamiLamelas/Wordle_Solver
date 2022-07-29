@@ -14,6 +14,7 @@ Date: Summer 2022
 
 #include "ranker.h"
 #include <unordered_map>
+#include <vector>
 
 /*
 This class defines a ranking scheme based on letter frequency.
@@ -77,20 +78,20 @@ public:
     virtual int GetRank(char letter) const;
 
     /*
-    Gets the count of a letter currently stored by the ranker.
-
-    Parameters:
-        letter: A letter
+    Gets a string with letters ranking and count information.
 
     Returns:
-        The count of letter calculated in SetUp or 0 if no count can
-        be found for the letter.
+        A string with each letter stored in the eligible words file most
+        recently seen by SetUp with letters ordered in ascending ranking
+        order along with their rank and frequency count on separate lines.
     */
-    virtual int GetCount(char letter) const;
+    virtual std::string GetDebugInfo() const override;
 
 private:
     /*
     Stores the frequencies of each letter that appears in the eligible words.
+    If we have words "abbbb" and "aabbb" then word_counts['a'] = 2 (not 3).
+    That is, it functions akin to performing a grep + wc on the words file.
     Assuming only letters a-z, this could be replaced by a length 26 int
     array. This is updated by SetUp which, as described in WordleSolver,
     is called before each guess is made so that the ranking map can be
@@ -98,7 +99,7 @@ private:
     dictionary may not the best most frequent after the dictionary has
     been reduced via various rounds of feedback.
     */
-    std::unordered_map<char, int> counts;
+    std::unordered_map<char, int> word_counts;
 
     /*
     Stores the rank (1,2,...) of each letter that appears in the eligible words.
@@ -110,6 +111,13 @@ private:
     dictionary has been reduced via various rounds of feedback.
     */
     std::unordered_map<char, int> ranking;
+
+    /*
+    Stores the keys of ranking and counts, that is the letters in the eligible
+    words file, sorted by their rank. That is, letters[0] is the letter that
+    occurs most frequently in the eligible words file.
+    */
+    std::vector<char> letters;
 };
 
 #endif

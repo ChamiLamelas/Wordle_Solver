@@ -8,10 +8,11 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include <unordered_set>
 
-LetterRanker::LetterRanker(): AbstractRanker("LetterRanker") {}
+LetterRanker::LetterRanker() : AbstractRanker("LetterRanker") {}
 
-LetterRanker::LetterRanker(std::string_view name): AbstractRanker(name) {}
+LetterRanker::LetterRanker(std::string_view name) : AbstractRanker(name) {}
 
 void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {
@@ -21,40 +22,50 @@ void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
         throw WordleSolverException("Could not open " + eligible_fp + " for reading");
     }
 
-    // Read over each letter in each eligible word and increase its count after resetting counts.
-    counts.clear();
+    // Stores the current word read from file
     std::string word;
+
+    // Stores the unique characters in word
+    std::unordered_set<char> unique_chars;
+
+    // Read over each letter in each eligible word and increase its count after resetting counts.
+    word_counts.clear();
     while (eligible_file.good())
     {
         std::getline(eligible_file, word);
-        for (const auto &c : word)
+        for (auto c : word)
         {
-            counts[c] += 1;
+            if (unique_chars.find(c) == unique_chars.end()) {
+                word_counts[c] += 1;
+                unique_chars.insert(c);
+            }
         }
+
+        // Clear unique characters for next word
+        unique_chars.clear();
     }
     eligible_file.close();
 
-    // Collect the letters in the eligible words into a vector, container
-    // to be sorted must have random access iterators
-    // (https://cplusplus.com/reference/algorithm/sort/)
-    std::vector<char> keys;
-    for (const auto &p : counts)
+    letters.clear();
+    for (const auto &p : word_counts)
     {
-        keys.push_back(p.first);
+        letters.push_back(p.first);
     }
 
     // Sort the letters based on their frequency
-    // counts isn't in enclosing scope, this->counts is truly what is
-    // called everytime counts is written, so we pass this to the
+    // word_counts isn't in enclosing scope, this->word_counts is truly what is
+    // called everytime word_counts is written, so we pass this to the
     // capture list (which is a pointer)
-    std::sort(keys.begin(), keys.end(), [this](char k1, char k2)
-              { return counts[k1] > counts[k2]; });
+    // Note letters must be a vector as sort requires random
+    // access iterators: (https://cplusplus.com/reference/algorithm/sort/)
+    std::sort(letters.begin(), letters.end(), [this](char k1, char k2)
+              { return word_counts[k1] > word_counts[k2]; });
 
     // Update our ranking map (clear removes any letters that may no longer be in eligible words)
     ranking.clear();
-    for (size_t i{0}; i < keys.size(); i++)
+    for (size_t i{0}; i < letters.size(); i++)
     {
-        ranking[keys[i]] = i + 1;
+        ranking[letters[i]] = i + 1;
     }
 }
 
@@ -75,8 +86,20 @@ int LetterRanker::GetRank(char letter) const
     return (itr == ranking.end()) ? INT_MAX : itr->second;
 }
 
-int LetterRanker::GetCount(char letter) const
+std::string LetterRanker::GetDebugInfo() const
 {
-    auto itr{counts.find(letter)};
-    return (itr == counts.end()) ? 0 : itr->second;
+    // https://stackoverflow.com/questions/18892281/most-optimized-way-of-concatenation-in-strings
+    std::string debug_info;
+    debug_info.reserve(letters.size() * 10);
+    for (auto l : letters)
+    {
+        debug_info += l;
+        debug_info += ": ";
+        debug_info += std::to_string(ranking.find(l)->second);
+        debug_info += " ";
+        debug_info += std::to_string(word_counts.find(l)->second);
+        debug_info += "\n";
+    }
+
+    return debug_info;
 }

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <limits>
+#include <unordered_set>
 
 TwoLetterRanker::TwoLetterRanker() : AbstractRanker("TwoLetterRanker") {}
 
@@ -22,37 +23,46 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess
         throw WordleSolverException("Could not open " + eligible_fp + " for reading");
     }
 
-    // Read over each substring in each eligible word and increase its count after resetting counts.
+    // Stores the current word read from file
     std::string word;
-    counts.clear();
+
+    // Stores the unique 2 letter substrings in word
+    std::unordered_set<std::string> unique_substrs;
+
+    // Read over each substring in each eligible word and increase its count after resetting word_counts.
+    word_counts.clear();
     while (eligible_file.good())
     {
         std::getline(eligible_file, word);
         for (auto i{0}; i < word.size() - 1; i++)
         {
-            counts[word.substr(i, 2)]++;
+            auto substr{word.substr(i,2)};
+            if (unique_substrs.find(substr) == unique_substrs.end()) {
+                word_counts[substr]++;
+                unique_substrs.insert(substr);
+            }
         }
+
+        // Clear unique substrings for next word
+        unique_substrs.clear();
     }
     eligible_file.close();
 
-    // Collect the letters in the eligible words into a vector, container
-    // to be sorted must have random access iterators
-    // (https://cplusplus.com/reference/algorithm/sort/)
-    std::vector<std::string> keys;
-    for (const auto &p : counts)
+    substrings.clear();
+    for (const auto &p : word_counts)
     {
-        keys.push_back(p.first);
+        substrings.push_back(p.first);
     }
 
     // Sort the letters based on their frequency
-    std::sort(keys.begin(), keys.end(), [this](const std::string &k1, const std::string &k2)
-              { return counts[k1] > counts[k2]; });
+    std::sort(substrings.begin(), substrings.end(), [this](const std::string &k1, const std::string &k2)
+              { return word_counts[k1] > word_counts[k2]; });
 
     // Update our ranking map (clear removes any substrings that may no longer be in eligible words)
     ranking.clear();
-    for (size_t i{0}; i < keys.size(); i++)
+    for (size_t i{0}; i < substrings.size(); i++)
     {
-        ranking[keys[i]] = i + 1;
+        ranking[substrings[i]] = i + 1;
     }
 }
 
@@ -75,8 +85,20 @@ int TwoLetterRanker::GetRank(std::string_view substr) const
     return (itr == ranking.end()) ? INT_MAX : itr->second;
 }
 
-int TwoLetterRanker::GetCount(std::string_view substr) const
+std::string TwoLetterRanker::GetDebugInfo() const
 {
-    auto itr{counts.find(std::string(substr))};
-    return (itr == counts.end()) ? 0 : itr->second;
+    // https://stackoverflow.com/questions/18892281/most-optimized-way-of-concatenation-in-strings
+    std::string debug_info;
+    debug_info.reserve(substrings.size() * 10);
+    for (const auto &s : substrings)
+    {
+        debug_info += s;
+        debug_info += ": ";
+        debug_info += std::to_string(ranking.find(s)->second);
+        debug_info += " ";
+        debug_info += std::to_string(word_counts.find(s)->second);
+        debug_info += "\n";
+    }
+
+    return debug_info;
 }

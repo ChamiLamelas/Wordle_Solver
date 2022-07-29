@@ -14,6 +14,7 @@ Date: Summer 2022
 
 #include "ranker.h"
 #include <unordered_map>
+#include <vector>
 
 /*
 This class defines a ranking scheme based on two letter substring frequency.
@@ -78,29 +79,29 @@ public:
     virtual int GetRank(std::string_view substr) const;
 
     /*
-    Gets the count of a two letter substring currently stored by the ranker.
-
-    Parameters:
-        substr: Two letter substring
+    Gets a string with substrings ranking and count information.
 
     Returns:
-        The count of two letter substring calculated in SetUp or 0 if 
-        no count can be found for this substring.
+        A string with each substring stored in the eligible words file most
+        recently seen by SetUp with substrings ordered in ascending ranking
+        order along with their rank and frequency count on separate lines.
     */
-    virtual int GetCount(std::string_view substr) const;
+    virtual std::string GetDebugInfo() const override;
 
 private:
     /*
     Stores the frequencies of each two letter substring that appears in 
-    the eligible words. Assuming only letters a-z, this could be replaced 
-    by a length (26 c 2) * 2 int array. This is updated by SetUp which, 
-    as described in WordleSolver, is called before each guess is made so 
-    that the ranking map can be updated. Note, the two letter substrings 
+    the eligible words. If we have words "abbbb" and "aabbb" then 
+    word_counts['bb'] = 2 (not 5). That is, it functions akin to performing 
+    a grep + wc on the words file. Assuming only letters a-z, this could 
+    be replaced by a length (26 c 2) * 2 int array. This is updated by SetUp 
+    which, as described in WordleSolver, is called before each guess is made 
+    so that the ranking map can be updated. Note, the two letter substrings 
     that were most frequent in the overall dictionary may not the best 
     most frequent after the dictionary has been reduced via various rounds 
     of feedback.
     */
-    std::unordered_map<std::string, int> counts;
+    std::unordered_map<std::string, int> word_counts;
 
     /*
     Stores the rank (1,2,...) of each two letter substring that appears 
@@ -113,6 +114,13 @@ private:
     dictionary has been reduced via various rounds of feedback.
     */
     std::unordered_map<std::string, int> ranking;
+
+    /*
+    Stores the keys of ranking and counts, that is the two letter substrings 
+    in the eligible words file, sorted by their rank. That is, substrings[0] 
+    is the substring that occurs most frequently in the eligible words file.
+    */
+    std::vector<std::string> substrings;
 };
 
 #endif
