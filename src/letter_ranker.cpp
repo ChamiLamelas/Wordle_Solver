@@ -4,7 +4,7 @@
 
 #include "letter_ranker.h"
 #include <fstream>
-#include "exceptions.h"
+#include "misc.h"
 #include <vector>
 #include <algorithm>
 #include <limits>
@@ -47,32 +47,7 @@ void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
     }
     eligible_file.close();
 
-    letters.clear();
-    for (const auto &p : word_counts)
-    {
-        letters.push_back(p.first);
-    }
-
-    // Sort the letters based on their frequency
-    // word_counts isn't in enclosing scope, this->word_counts is truly what is
-    // called everytime word_counts is written, so we pass this to the
-    // capture list (which is a pointer)
-    // Note letters must be a vector as sort requires random
-    // access iterators: (https://cplusplus.com/reference/algorithm/sort/)
-    std::sort(letters.begin(), letters.end(), [this](char k1, char k2)
-              { return word_counts[k1] > word_counts[k2]; });
-
-    // Update our ranking map (clear removes any letters that may no longer be in eligible words)
-    ranking.clear();
-    int curr_rank{0};
-    size_t curr_count{SIZE_MAX};
-    for (auto l : letters) {
-        if (word_counts[l] < curr_count) {
-            curr_rank++;
-            curr_count = word_counts[l];
-        }
-        ranking[l] = curr_rank;
-    }
+    CountsToRanks(word_counts, ranking, letters);
 }
 
 int LetterRanker::Rank(std::string_view word, unsigned short guess) const

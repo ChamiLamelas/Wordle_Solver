@@ -4,7 +4,7 @@
 
 #include "two_letter_ranker.h"
 #include <fstream>
-#include "exceptions.h"
+#include "misc.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -49,27 +49,7 @@ void TwoLetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess
     }
     eligible_file.close();
 
-    substrings.clear();
-    for (const auto &p : word_counts)
-    {
-        substrings.push_back(p.first);
-    }
-
-    // Sort the letters based on their frequency
-    std::sort(substrings.begin(), substrings.end(), [this](const std::string &k1, const std::string &k2)
-              { return word_counts[k1] > word_counts[k2]; });
-
-    // Update our ranking map (clear removes any substrings that may no longer be in eligible words)
-    ranking.clear();
-    int curr_rank{0};
-    size_t curr_count{SIZE_MAX};
-    for (auto s : substrings) {
-        if (word_counts[s] < curr_count) {
-            curr_rank++;
-            curr_count = word_counts[s];
-        }
-        ranking[s] = curr_rank;
-    }
+    CountsToRanks(word_counts, ranking, substrings);
 }
 
 int TwoLetterRanker::Rank(std::string_view word, unsigned short guess) const

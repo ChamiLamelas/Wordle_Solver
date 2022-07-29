@@ -5,7 +5,7 @@
 #include <iostream>
 #include "user.h"
 #include "evaluation.h"
-#include "exceptions.h"
+#include "misc.h"
 #include "ranker.h"
 #include "random_ranker.h"
 #include "solver.h"
@@ -40,8 +40,8 @@ int main()
 
     try
     {
-        // WordleSolver solver(dictionary_fps[1], &r9, true);  
-        // std::cout << "Evaluation result: " << Evaluate(solver, "lapse") << std::endl;
+        WordleSolver solver(dictionary_fps[1], &r9, true);  
+        std::cout << "Evaluation result: " << Evaluate(solver, "lapse") << std::endl;
         // RunUserMode(dictionary_fps[0], &lr, true);
         // GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt");
     }
