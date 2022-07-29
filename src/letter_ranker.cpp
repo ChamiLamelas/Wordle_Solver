@@ -103,3 +103,27 @@ std::string LetterRanker::GetDebugInfo() const
 
     return debug_info;
 }
+
+DuplicatePenaltyLetterRanker::DuplicatePenaltyLetterRanker(int p) : LetterRanker("DuplicatePenaltyLetterRanker"), duplicate_penalty(p) {}
+DuplicatePenaltyLetterRanker::DuplicatePenaltyLetterRanker(std::string_view name, int p) : LetterRanker(name), duplicate_penalty(p) {}
+
+int DuplicatePenaltyLetterRanker::Rank(std::string_view word, unsigned short guess) const
+{
+    // Sums rank of letters in word using GetCount, identifies duplicates
+    std::unordered_set<char> uniq_letters;
+    int rank{0};
+    for (const auto &c : word)
+    {
+        rank += GetRank(c);
+        uniq_letters.insert(c);
+    }
+    return rank + (duplicate_penalty * (word.size() - uniq_letters.size()));
+}
+
+RestrictedDuplicatePenaltyLetterRanker::RestrictedDuplicatePenaltyLetterRanker(int p, unsigned short ng): DuplicatePenaltyLetterRanker("RestrictedDuplicatePenaltyLetterRanker", p), num_guesses(ng) {}
+
+RestrictedDuplicatePenaltyLetterRanker::RestrictedDuplicatePenaltyLetterRanker(std::string_view name, int p, unsigned short ng): DuplicatePenaltyLetterRanker(name, p), num_guesses(ng) {}
+
+int RestrictedDuplicatePenaltyLetterRanker::Rank(std::string_view word, unsigned short guess) const {
+    return (guess <= num_guesses) ? DuplicatePenaltyLetterRanker::Rank(word, guess) : LetterRanker::Rank(word, guess);
+}
