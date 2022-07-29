@@ -8,7 +8,12 @@ AbstractRanker::AbstractRanker(std::string_view n) : name(n) {}
 
 AbstractRanker::~AbstractRanker() {}
 
-std::string AbstractRanker::Name() const
+std::string AbstractRanker::GetName() const
 {
     return name;
+}
+
+std::string AbstractRanker::GetDebugInfo() const
+{
+    return "";
 }

@@ -72,7 +72,22 @@ public:
     Returns:
         Name for this ranking scheme.
     */
-    virtual std::string Name() const;
+    virtual std::string GetName() const;
+
+    /*
+    Gets debug information about the ranker.
+
+    This function provides debugging information about the ranker that can
+    be used by a WordleSolver running in debug mode. It is guaranteed that
+    the WordleSolver will call GetDebugInfo after calling SetUp. A most 
+    effective implementation will yield information regarding any data
+    maintained by a ranker. A default implementation is provided that
+    returns nothing.
+
+    Returns:
+        The debug information as a string.
+    */
+    virtual std::string GetDebugInfo() const;
 
 protected:
     /*
