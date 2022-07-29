@@ -33,12 +33,15 @@ int main()
     RestrictedDuplicatePenaltyTwoLetterRanker rdptlr3("RestrictedDuplicatePenaltyTwoLetterRanker(100,3)", 100, 3);
 
     std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt"};
-    std::vector<AbstractRanker *> rankers{&rr, &lr, &dplr, &tlr, &dptlr, &rdplr2, &rdptlr2, &rdplr3, &rdptlr3};
+    // , &dplr, &tlr, &dptlr, &rdplr2, &rdptlr2, &rdplr3, &rdptlr3
+    std::vector<AbstractRanker *> rankers{&rdplr2};
 
     try
     {
-        // RunUserMode(dictionary_fps[0], &rdptlr2);
-        GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt");
+        WordleSolver solver(dictionary_fps[0], &rdplr2, true);
+        std::cout << "Evaluation result: " << Evaluate(solver, "bench") << std::endl;
+        // RunUserMode(dictionary_fps[0], &lr, true);
+        // GridEvaluate(dictionary_fps, rankers, "data/medium_wordle_words_todate.txt");
     }
     catch (const WordleSolverException &e)
     {
