@@ -17,7 +17,7 @@ Date: Summer 2022
 /*
 Class that ranks eligible words randomly.
 
-This class derives AbstractRanker and prvoides random ranks for words. This
+This class derives AbstractRanker and provides random ranks for words. This
 class provides a simple implementation of AbstractRanker and also a useful
 baseline for comparing more advanced ranking schemes. This class cannot
 be derived from.

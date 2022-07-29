@@ -8,7 +8,7 @@
 
 RandomRanker::RandomRanker(): AbstractRanker("RandomRanker")
 {
-    srand(time(NULL));
+    srand(time(nullptr));
 }
 
 RandomRanker::RandomRanker(unsigned int seed): AbstractRanker("RandomRanker")
