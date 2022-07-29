@@ -13,8 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include "exceptions.h"
-#include "file_ops.h"
+#include "misc.h"
 
 std::string GetFeedback(std::string_view guess, std::string_view word)
 {
