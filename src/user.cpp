@@ -50,7 +50,12 @@ std::string ReadFeedback()
 
 void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker)
 {
-    WordleSolver solver(dictionary_fp, ranker);
+    RunUserMode(dictionary_fp, ranker, false);
+}
+
+void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker, bool debug_mode)
+{
+    WordleSolver solver(dictionary_fp, ranker, debug_mode);
     std::string guess;
     std::string feedback;
     for (auto num_attempts{0}; num_attempts < 6; num_attempts++)
