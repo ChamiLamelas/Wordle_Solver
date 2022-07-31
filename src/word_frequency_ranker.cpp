@@ -7,6 +7,7 @@
 #include "misc.h"
 #include <limits>
 
+WordFrequencyRanker::WordFrequencyRanker(AbstractRanker *r, const std::string &freq_fp) : WordFrequencyRanker("WordFrequencyRanker(" + r->GetName() + ",\"" + freq_fp + "\")", r, freq_fp) {}
 WordFrequencyRanker::WordFrequencyRanker(std::string_view name, AbstractRanker *r, const std::string &freq_fp) : AbstractRanker(name), ranker(r)
 {
     std::ifstream words_file(freq_fp, std::ios_base::in);

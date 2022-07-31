@@ -4,6 +4,8 @@
 
 #include "vowel_ranker.h"
 
+VowelRanker::VowelRanker(AbstractRanker *r, int cp) : VowelRanker("VowelRanker(" + r->GetName() + "," + std::to_string(cp) + ")", r, cp, 7) {}
+VowelRanker::VowelRanker(AbstractRanker *r, int cp, unsigned short ng) : VowelRanker("VowelRanker(" + r->GetName() + "," + std::to_string(cp) + "," + std::to_string(ng) + ")", r, cp, ng) {}
 VowelRanker::VowelRanker(std::string_view name, AbstractRanker *r, int cp) : VowelRanker(name, r, cp, 7) {}
 VowelRanker::VowelRanker(std::string_view name, AbstractRanker *r, int cp, unsigned short ng) : AbstractRanker(name), ranker(r), consonant_penalty(cp), num_guesses(ng) {}
 

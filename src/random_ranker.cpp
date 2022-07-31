@@ -6,12 +6,12 @@
 #include <ctime>
 #include <string>
 
-RandomRanker::RandomRanker(): AbstractRanker("RandomRanker")
+RandomRanker::RandomRanker(): AbstractRanker("RandomRanker()")
 {
     srand(time(nullptr));
 }
 
-RandomRanker::RandomRanker(unsigned int seed): AbstractRanker("RandomRanker")
+RandomRanker::RandomRanker(unsigned int seed): AbstractRanker("RandomRanker(" + std::to_string(seed) + ")")
 {
     srand(seed);
 }

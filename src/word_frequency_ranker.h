@@ -28,6 +28,19 @@ public:
     Constructs a WordFrequencyRanker.
 
     Parameters:
+        r: Pointer to AbstractRanker that will be used by this class.
+        freq_fp: Filepath to CSV file with 2 columns where the first column
+                 is a list of 5 letter words ordered in descending popularity
+                 and the second column is the counts. Popularity ranks are
+                 computed from this file. Words with equal frequency have
+                 equal rank.
+    */
+    WordFrequencyRanker(AbstractRanker *r, const std::string &freq_fp);
+
+    /*
+    Overloaded version of WordFrequencyRanker(AbstractRanker*,const std::string&) that allows name specification.
+
+    Parameters:
         name: Name for the ranker
         r: Pointer to AbstractRanker that will be used by this class.
         freq_fp: Filepath to CSV file with 2 columns where the first column

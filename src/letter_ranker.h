@@ -21,7 +21,7 @@ Assuming that the wordle solution is selected randomly from the list of
 wordle solutions, a guess that is made up of letters that appear frequently
 in eligible words is more likely to contain letters in the solution word.
 */
-class LetterRanker : public AbstractRanker
+class LetterRanker final : public AbstractRanker
 {
 public:
     /*
@@ -47,7 +47,7 @@ public:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
     */
-    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    void SetUp(const std::string &eligible_fp, unsigned short guess) override;
 
     /*
     Computes the rank of a word as the sum of its letter ranks.
@@ -61,7 +61,7 @@ public:
     Returns:
         The rank as computed above.
     */
-    virtual int Rank(std::string_view word, unsigned short guess) const override;
+    int Rank(std::string_view word, unsigned short guess) const override;
 
     /*
     Gets a string with letters ranking and count information.
@@ -71,7 +71,7 @@ public:
         recently seen by SetUp with letters ordered in ascending ranking
         order along with their rank and frequency count on separate lines.
     */
-    virtual std::string GetDebugInfo() const override;
+    std::string GetDebugInfo() const override;
 
 private:
     /*
@@ -114,7 +114,7 @@ wordle solutions, a guess that is made up of n-letter substrings that
 appear frequently in eligible words is more likely to contain letters
 in the solution word.
 */
-class SubstringRanker : public AbstractRanker
+class SubstringRanker final : public AbstractRanker
 {
 public:
     /*
@@ -144,7 +144,7 @@ public:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
     */
-    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    void SetUp(const std::string &eligible_fp, unsigned short guess) override;
 
     /*
     Computes the rank of a word as the sum of its n letter substring ranks.
@@ -158,7 +158,7 @@ public:
     Returns:
         The rank as computed above.
     */
-    virtual int Rank(std::string_view word, unsigned short guess) const override;
+    int Rank(std::string_view word, unsigned short guess) const override;
 
     /*
     Gets a string with substrings ranking and count information.
@@ -168,7 +168,7 @@ public:
         recently seen by SetUp with substrings ordered in ascending ranking
         order along with their rank and frequency count on separate lines.
     */
-    virtual std::string GetDebugInfo() const override;
+    std::string GetDebugInfo() const override;
 
 private:
     /*

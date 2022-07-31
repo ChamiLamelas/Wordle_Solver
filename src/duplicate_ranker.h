@@ -30,6 +30,25 @@ public:
     Constructs a DuplicateRanker where duplicates are always penalized.
 
     Parameters:
+        r: Pointer to AbstractRanker that will be used by this class.
+        dp: Penalty applied for each duplicate letter.
+    */
+    DuplicateRanker(AbstractRanker *r, int dp);
+
+    /*
+    Overloaded version of DuplicateRanker(AbstractRanker*,int) that limits when duplicates are penalized.
+
+    Parameters:
+        r: Pointer to AbstractRanker that will be used by this class.
+        dp: Penalty applied for each duplicate letter.
+        ng: Number of guesses for which the penalty is applied.
+    */
+    DuplicateRanker(AbstractRanker *r, int dp, unsigned short ng);
+
+    /*
+    Overloaded version of DuplicateRanker(AbstractRanker*,int) that allows name specification.
+
+    Parameters:
         name: Name for the ranker
         r: Pointer to AbstractRanker that will be used by this class.
         dp: Penalty applied for each duplicate letter.
@@ -37,7 +56,7 @@ public:
     DuplicateRanker(std::string_view name, AbstractRanker *r, int dp);
 
     /*
-    Overloaded constructor that limits how many guesses duplicates are penalized.
+    Overloaded version of DuplicateRanker(AbstractRanker*,int,unsigned short) that allows name specification.
 
     Parameters:
         name: Name for the ranker
@@ -60,7 +79,7 @@ public:
     Computes a rank using the passed AbstractRanker and potentially a duplicate penalty.
 
     If we have not yet surpassed the number of guesses for which duplicates are being
-    penalized, the returned rank is computed as the sum of the passed ranker's Rank() 
+    penalized, the returned rank is computed as the sum of the passed ranker's Rank()
     output and the passed duplicate penalty for each instance of a duplicate. If we
     have surpassed it, then we do not apply the penalty, and only return the passed
     ranker's Rank().

@@ -6,7 +6,7 @@
 #include <fstream>
 #include "misc.h"
 
-PositionRanker::PositionRanker() : AbstractRanker("PositionRanker") {}
+PositionRanker::PositionRanker() : AbstractRanker("PositionRanker()") {}
 PositionRanker::PositionRanker(std::string_view name) : AbstractRanker(name) {}
 void PositionRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
 {

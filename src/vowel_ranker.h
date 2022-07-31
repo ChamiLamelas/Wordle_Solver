@@ -37,19 +37,38 @@ public:
     Constructs a VowelRanker where consonants are always penalized.
 
     Parameters:
-        name: Name for the ranker
         r: Pointer to AbstractRanker that will be used by this class.
         cp: Penalty applied for each consontant letter.
     */
-    VowelRanker(std::string_view name, AbstractRanker *r, int cp);
+    VowelRanker(AbstractRanker *r, int cp);
 
     /*
-    Overloaded constructor that limits how many guesses consonants are penalized.
+    Overloaded version of VowelRanker(AbstractRanker*,int) that limits when consonants are penalized.
+
+    Parameters:
+        r: Pointer to AbstractRanker that will be used by this class.
+        cp: Penalty applied for each consontant letter.
+        ng: Number of guesses for which the penalty is applied.
+    */
+    VowelRanker(AbstractRanker *r, int cp, unsigned short ng);
+
+    /*
+    Overloaded version of VowelRanker(AbstractRanker*,int) that allows name specification.
 
     Parameters:
         name: Name for the ranker
         r: Pointer to AbstractRanker that will be used by this class.
-        cp: Penalty applied for each consontant letter.
+        cp: Penalty applied for each consonant.
+    */
+    VowelRanker(std::string_view name, AbstractRanker *r, int cp);
+
+    /*
+    Overloaded version of VowelRanker(AbstractRanker*,int,unsigned short) that allows name specification.
+
+    Parameters:
+        name: Name for the ranker
+        r: Pointer to AbstractRanker that will be used by this class.
+        cp: Penalty applied for each consonant.
         ng: Number of guesses for which the penalty is applied.
     */
     VowelRanker(std::string_view name, AbstractRanker *r, int cp, unsigned short ng);
@@ -67,7 +86,7 @@ public:
     Computes a rank using the passed AbstractRanker and potentially a consonant penalty.
 
     If we have not yet surpassed the number of guesses for which consonants are being
-    penalized, the returned rank is computed as the sum of the passed ranker's Rank() 
+    penalized, the returned rank is computed as the sum of the passed ranker's Rank()
     output and the passed consonant penalty for each instance of a consonant. If we
     have surpassed it, then we do not apply the penalty, and only return the passed
     ranker's Rank().

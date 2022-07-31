@@ -11,7 +11,7 @@
 #include <unordered_set>
 #include <stdint.h>
 
-LetterRanker::LetterRanker() : AbstractRanker("LetterRanker") {}
+LetterRanker::LetterRanker() : AbstractRanker("LetterRanker()") {}
 
 LetterRanker::LetterRanker(std::string_view name) : AbstractRanker(name) {}
 
