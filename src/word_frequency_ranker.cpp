@@ -54,7 +54,7 @@ std::string WordFrequencyRanker::GetDebugInfo() const
     {
         debug_info += p.first;
         debug_info += ": ";
-        debug_info += p.second;
+        debug_info += std::to_string(p.second);
         debug_info += "\n";
     }
 

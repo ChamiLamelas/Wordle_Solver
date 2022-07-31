@@ -351,10 +351,6 @@ std::string WordleSolver::Guess(std::string_view feedback)
             Private::DebugLog(*this, "Parsing Feedback: " + std::string(feedback));
         }
         Private::UpdateEligibleWords(*this, feedback);
-        if (debug_mode)
-        {
-            Private::AutoDebugLogEligibleWords(*this);
-        }
     }
 
     // Read-only file stream for eligible words
@@ -389,6 +385,10 @@ std::string WordleSolver::Guess(std::string_view feedback)
     {
         std::getline(eligible_file, word);
         current_rank = ranker->Rank(word, num_guesses + 1);
+        if (debug_mode)
+        {
+            Private::DebugLog(*this, "Eligible: " + word + " rank: " + std::to_string(current_rank));
+        }
         if (current_rank < current_min_rank)
         {
             current_guess = word;
