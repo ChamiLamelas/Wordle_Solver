@@ -9,16 +9,17 @@ VowelRanker::VowelRanker(AbstractRanker *r, int cp, unsigned short ng) : VowelRa
 VowelRanker::VowelRanker(std::string_view name, AbstractRanker *r, int cp) : VowelRanker(name, r, cp, 7) {}
 VowelRanker::VowelRanker(std::string_view name, AbstractRanker *r, int cp, unsigned short ng) : AbstractRanker(name), ranker(r), consonant_penalty(cp), num_guesses(ng) {}
 
-void VowelRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void VowelRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
-    ranker->SetUp(eligible_fp, guess);
+    curr_guess = guess;
+    ranker->SetUp(eligible_fp, guess, feedback);
 }
 
-int VowelRanker::Rank(std::string_view word, unsigned short guess) const
+int VowelRanker::Rank(std::string_view word) const
 {
-    if (guess > num_guesses)
+    if (curr_guess > num_guesses)
     {
-        return ranker->Rank(word, guess);
+        return ranker->Rank(word);
     }
 
     auto consonants{0};
@@ -26,7 +27,7 @@ int VowelRanker::Rank(std::string_view word, unsigned short guess) const
     {
         consonants += VOWELS.find(c) == VOWELS.end();
     }
-    return ranker->Rank(word, guess) + (consonant_penalty * consonants);
+    return ranker->Rank(word) + (consonant_penalty * consonants);
 }
 
 std::string VowelRanker::GetDebugInfo() const

@@ -46,8 +46,10 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
+        feedback: Feedback on previous guess (if guess = 1, this parameter should not
+                  be used by SetUp, it will be set to some placeholder when called).
     */
-    void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    void SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback) override;
 
     /*
     Computes the rank of a word as the sum of its letter ranks.
@@ -56,12 +58,11 @@ public:
 
     Parameters:
         word: Word to rank.
-        guess: What guess this ranking will be for (1...6).
 
     Returns:
         The rank as computed above.
     */
-    int Rank(std::string_view word, unsigned short guess) const override;
+    int Rank(std::string_view word) const override;
 
     /*
     Gets a string with letters ranking and count information.
@@ -143,8 +144,10 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
+        feedback: Feedback on previous guess (if guess = 1, this parameter should not
+                  be used by SetUp, it will be set to some placeholder when called).
     */
-    void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    void SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback) override;
 
     /*
     Computes the rank of a word as the sum of its n letter substring ranks.
@@ -153,12 +156,11 @@ public:
 
     Parameters:
         word: Word to rank.
-        guess: What guess this ranking will be for (1...6).
 
     Returns:
         The rank as computed above.
     */
-    int Rank(std::string_view word, unsigned short guess) const override;
+    int Rank(std::string_view word) const override;
 
     /*
     Gets a string with substrings ranking and count information.
@@ -175,7 +177,7 @@ private:
     Stores the frequencies of each n letter substring that appears in
     the eligible words. If we have words "abbbb" and "aabbb" and n = 2 then
     word_counts['bb'] = 2 (not 5). That is, it functions akin to performing
-    a grep + wc on the words file. This is updated by SetUp which, as 
+    a grep + wc on the words file. This is updated by SetUp which, as
     described in WordleSolver, is called before each guess is made
     so that the ranking map can be updated. Note, the n letter substrings
     that were most frequent in the overall dictionary may not the best
@@ -186,8 +188,8 @@ private:
 
     /*
     Stores the rank (1,2,...) of each two letter substring that appears
-    in the eligible words. This is updated by SetUp which, as described 
-    in WordleSolver, is called before each guess is made so that ranking 
+    in the eligible words. This is updated by SetUp which, as described
+    in WordleSolver, is called before each guess is made so that ranking
     can be adjusted for the eligible words.
     Note, the n letter substrings that were most frequent in the
     overall dictionary may not the best most frequent after the

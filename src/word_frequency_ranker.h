@@ -15,8 +15,8 @@ Date: Summer 2022
 A ranker that incorporates how common a word is in a ranking.
 
 This class derives from AbstractRanker and will rank words higher
-if they are more popular. This class operates on an AbstractRanker 
-that will actually rank the word (e.g. LetterRanker or SubstringRanker). 
+if they are more popular. This class operates on an AbstractRanker
+that will actually rank the word (e.g. LetterRanker or SubstringRanker).
 To better understand the relationship of WordFrequencyRanker and the
 AbstractRanker it uses, see the comments of the member functions
 below.
@@ -57,8 +57,10 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
+        feedback: Feedback on previous guess (if guess = 1, this parameter should not
+                  be used by SetUp, it will be set to some placeholder when called).
     */
-    virtual void SetUp(const std::string &eligible_fp, unsigned short guess);
+    virtual void SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback);
 
     /*
     Computes a rank using the passed AbstractRanker and the popularity ranking.
@@ -71,12 +73,11 @@ public:
 
     Parameters:
         word: Word to rank.
-        guess: What guess this ranking will be for (1...6).
 
     Returns:
         The rank as computed above.
     */
-    virtual int Rank(std::string_view word, unsigned short guess) const;
+    virtual int Rank(std::string_view word) const;
 
     /*
     Gets debug information on this ranker and the passed ranker.
@@ -87,6 +88,7 @@ public:
         provided by GetDebugInfo() in the passed ranker.
     */
     virtual std::string GetDebugInfo() const;
+
 private:
     // Ranking of words by popularity constructed using freq_fp
     std::unordered_map<std::string, int> ranking;

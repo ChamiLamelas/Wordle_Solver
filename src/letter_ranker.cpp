@@ -15,7 +15,7 @@ LetterRanker::LetterRanker() : AbstractRanker("LetterRanker()") {}
 
 LetterRanker::LetterRanker(std::string_view name) : AbstractRanker(name) {}
 
-void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
     std::ifstream eligible_file(eligible_fp, std::ios_base::in);
     if (!eligible_file.is_open())
@@ -51,7 +51,7 @@ void LetterRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
     CountsToRanks(word_counts, ranking, letters);
 }
 
-int LetterRanker::Rank(std::string_view word, unsigned short guess) const
+int LetterRanker::Rank(std::string_view word) const
 {
     // Sums rank of letters in word using map
     int rank{0};
@@ -91,7 +91,7 @@ SubstringRanker::SubstringRanker(std::string_view name, unsigned short n) : Abst
     substring_len = n;
 }
 
-void SubstringRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void SubstringRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
     std::ifstream eligible_file(eligible_fp, std::ios_base::in);
     if (!eligible_file.is_open())
@@ -128,7 +128,7 @@ void SubstringRanker::SetUp(const std::string &eligible_fp, unsigned short guess
     CountsToRanks(word_counts, ranking, substrings);
 }
 
-int SubstringRanker::Rank(std::string_view word, unsigned short guess) const
+int SubstringRanker::Rank(std::string_view word) const
 {
     // Sums rank of substrings in word using map
     int rank{0};

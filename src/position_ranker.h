@@ -47,8 +47,10 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
+        feedback: Feedback on previous guess (if guess = 1, this parameter should not
+                  be used by SetUp, it will be set to some placeholder when called).
     */
-    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    virtual void SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback) override;
 
     /*
     Computes the rank of a word as the sum of the ranks of each letter at their indices.
@@ -57,12 +59,11 @@ public:
 
     Parameters:
         word: Word to rank.
-        guess: What guess this ranking will be for (1...6).
 
     Returns:
         The rank as computed above.
     */
-    virtual int Rank(std::string_view word, unsigned short guess) const override;
+    virtual int Rank(std::string_view word) const override;
 
     /*
     Gets a string with letters ranking and count information for each of 5 indices.

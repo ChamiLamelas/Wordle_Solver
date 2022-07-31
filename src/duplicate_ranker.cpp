@@ -10,16 +10,17 @@ DuplicateRanker::DuplicateRanker(AbstractRanker *r, int dp, unsigned short ng) :
 DuplicateRanker::DuplicateRanker(std::string_view name, AbstractRanker *r, int dp) : DuplicateRanker(name, r, dp, 7) {}
 DuplicateRanker::DuplicateRanker(std::string_view name, AbstractRanker *r, int dp, unsigned short ng) : AbstractRanker(name), ranker(r), duplicate_penalty(dp), num_guesses(ng) {}
 
-void DuplicateRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void DuplicateRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
-    ranker->SetUp(eligible_fp, guess);
+    curr_guess = guess;
+    ranker->SetUp(eligible_fp, guess, feedback);
 }
 
-int DuplicateRanker::Rank(std::string_view word, unsigned short guess) const
+int DuplicateRanker::Rank(std::string_view word) const
 {
-    if (guess > num_guesses)
+    if (curr_guess > num_guesses)
     {
-        return ranker->Rank(word, guess);
+        return ranker->Rank(word);
     }
 
     std::unordered_set<char> uniq_letters;
@@ -27,7 +28,7 @@ int DuplicateRanker::Rank(std::string_view word, unsigned short guess) const
     {
         uniq_letters.insert(c);
     }
-    return ranker->Rank(word, guess) + (duplicate_penalty * (word.size() - uniq_letters.size()));
+    return ranker->Rank(word) + (duplicate_penalty * (word.size() - uniq_letters.size()));
 }
 
 std::string DuplicateRanker::GetDebugInfo() const

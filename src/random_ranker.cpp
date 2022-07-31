@@ -21,12 +21,12 @@ RandomRanker::RandomRanker(std::string_view name, unsigned int seed): AbstractRa
     srand(seed);
 }
 
-void RandomRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void RandomRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
     // Have nothing to do
 }
 
-int RandomRanker::Rank(std::string_view word, unsigned short guess) const
+int RandomRanker::Rank(std::string_view word) const
 {
     return rand();
 }

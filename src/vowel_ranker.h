@@ -79,8 +79,10 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
+        feedback: Feedback on previous guess (if guess = 1, this parameter should not
+                  be used by SetUp, it will be set to some placeholder when called).
     */
-    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) override;
+    virtual void SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback) override;
 
     /*
     Computes a rank using the passed AbstractRanker and potentially a consonant penalty.
@@ -93,12 +95,11 @@ public:
 
     Parameters:
         word: Word to rank.
-        guess: What guess this ranking will be for (1...6).
 
     Returns:
         The rank as computed above.
     */
-    virtual int Rank(std::string_view word, unsigned short guess) const override;
+    virtual int Rank(std::string_view word) const override;
 
     // Returns GetDebugInfo() as defined by the passed ranker.
     virtual std::string GetDebugInfo() const override;
@@ -112,6 +113,9 @@ private:
 
     // Number of guesses for which consontants will be penalized (ng in constructors)
     unsigned short num_guesses;
+
+    // Stores current guess reported by SetUp
+    unsigned short curr_guess;
 };
 
 #endif

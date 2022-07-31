@@ -36,15 +36,15 @@ WordFrequencyRanker::WordFrequencyRanker(std::string_view name, AbstractRanker *
     words_file.close();
 }
 
-void WordFrequencyRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void WordFrequencyRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
-    ranker->SetUp(eligible_fp, guess);
+    ranker->SetUp(eligible_fp, guess, feedback);
 }
 
-int WordFrequencyRanker::Rank(std::string_view word, unsigned short guess) const
+int WordFrequencyRanker::Rank(std::string_view word) const
 {
     auto p{ranking.find(std::string(word))};
-    return ranker->Rank(word, guess) + ((p == ranking.end()) ? ranking.size() + 1 : p->second);
+    return ranker->Rank(word) + ((p == ranking.end()) ? ranking.size() + 1 : p->second);
 }
 
 std::string WordFrequencyRanker::GetDebugInfo() const

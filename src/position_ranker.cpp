@@ -8,7 +8,7 @@
 
 PositionRanker::PositionRanker() : AbstractRanker("PositionRanker()") {}
 PositionRanker::PositionRanker(std::string_view name) : AbstractRanker(name) {}
-void PositionRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
+void PositionRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
 {
     std::ifstream eligible_file(eligible_fp, std::ios_base::in);
     if (!eligible_file.is_open())
@@ -41,7 +41,7 @@ void PositionRanker::SetUp(const std::string &eligible_fp, unsigned short guess)
     }
 }
 
-int PositionRanker::Rank(std::string_view word, unsigned short guess) const
+int PositionRanker::Rank(std::string_view word) const
 {
     int rank{0};
     for (auto i{0}; i < word.size(); i++)

@@ -361,7 +361,7 @@ std::string WordleSolver::Guess(std::string_view feedback)
     }
 
     // Prepare ranker (part of contract between WordleSolver and AbstractRanker)
-    ranker->SetUp(eligible_fp, num_guesses + 1);
+    ranker->SetUp(eligible_fp, num_guesses + 1, feedback);
 
     if (debug_mode)
     {
@@ -384,7 +384,7 @@ std::string WordleSolver::Guess(std::string_view feedback)
     while (eligible_file.good())
     {
         std::getline(eligible_file, word);
-        current_rank = ranker->Rank(word, num_guesses + 1);
+        current_rank = ranker->Rank(word);
         if (debug_mode)
         {
             Private::DebugLog(*this, "Eligible: " + word + " rank: " + std::to_string(current_rank));

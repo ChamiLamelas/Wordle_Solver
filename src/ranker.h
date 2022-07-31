@@ -42,8 +42,10 @@ public:
     Parameters:
         eligible_fp: Path to the remaining eligible words.
         guess: What guess this set up will be for (1...6).
+        feedback: Feedback on previous guess (if guess = 1, this parameter should not
+                  be used by SetUp, it will be set to some placeholder when called).
     */
-    virtual void SetUp(const std::string &eligible_fp, unsigned short guess) = 0;
+    virtual void SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback) = 0;
 
     /*
     Provides the ranking for a word for a certain guess.
@@ -55,12 +57,11 @@ public:
 
     Parameters:
         word: Word to rank.
-        guess: What guess this ranking will be for (1...6).
 
     Returns:
         Rank of word.
     */
-    virtual int Rank(std::string_view word, unsigned short guess) const = 0;
+    virtual int Rank(std::string_view word) const = 0;
 
     /*
     Provides a name for the ranker.
