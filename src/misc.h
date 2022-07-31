@@ -70,12 +70,26 @@ private:
     std::string reason;
 };
 
-// https://stackoverflow.com/a/36080
+/*
+Ranks elements based on their counts.
+
+Implementation in header because: https://stackoverflow.com/a/36080
+
+Template:
+    KeyType: type of elements
+
+Parameters:
+    counts: Map specifying counts of each element (not modified).
+    ranks: Map that will hold the elements in counts ranked 1,2, and so on. Rank 1
+           element had the highest count. Elements with the same count have the
+           same rank.
+    keys: Vector that will hold the elements in order of increasing rank.
+*/
 template <typename KeyType>
-void CountsToRanks(const std::unordered_map<KeyType, size_t> &scores, std::unordered_map<KeyType, int> &ranks, std::vector<KeyType> &keys)
+void CountsToRanks(const std::unordered_map<KeyType, size_t> &counts, std::unordered_map<KeyType, int> &ranks, std::vector<KeyType> &keys)
 {
     keys.clear();
-    for (const auto &s : scores)
+    for (const auto &s : counts)
     {
         keys.push_back(s.first);
     }
@@ -83,18 +97,18 @@ void CountsToRanks(const std::unordered_map<KeyType, size_t> &scores, std::unord
     // To use sort we have a few requirements: first, iterators of container being sorted
     // must be random access iterators (hence vector created prior), second sort predicate
     // must specify strict weak ordering
-    std::sort(keys.begin(), keys.end(), [&scores](const KeyType &key1, const KeyType &key2)
-              { return scores.find(key1)->second > scores.find(key2)->second; });
+    std::sort(keys.begin(), keys.end(), [&counts](const KeyType &key1, const KeyType &key2)
+              { return counts.find(key1)->second > counts.find(key2)->second; });
 
     ranks.clear();
     int curr_rank{1};
-    auto curr_score{scores.find(keys[0])->second};
+    auto curr_score{counts.find(keys[0])->second};
     for (const auto &k : keys)
     {
-        if (scores.find(k)->second < curr_score)
+        if (counts.find(k)->second < curr_score)
         {
             curr_rank++;
-            curr_score = scores.find(k)->second;
+            curr_score = counts.find(k)->second;
         }
         ranks[k] = curr_rank;
     }
