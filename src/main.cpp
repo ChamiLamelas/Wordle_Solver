@@ -64,11 +64,17 @@ int main(int argc, char *argv[])
     VowelRanker r37(&r13, 100, 2);
     VowelRanker r38(&r15, 100, 2);
     CombinedRanker r39;
+    DuplicateRanker r40(&r39, 100);
+    DuplicateRanker r41(&r39, 100, 2);
+    DuplicateRanker r42(&r39, 100, 3);
+    VowelRanker r43(&r41, 100);
+    VowelRanker r44(&r41, 100, 2);
+    WordFrequencyRanker r45(&r41, freq_fp);
 
     std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt", "data/medium_wordle_words_todate.txt"};
     // &r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13, &r14, &r15, &r16, &r17, &r18, &r19, &r20, &r21, &r22, &r23, &r24, &r25, &r26, &r27, &r28, &r29, &r30, &r31
-    // &r32, &r33, &r34, &r35, &r36, &r37, &r38
-    std::vector<AbstractRanker *> rankers{&r22};
+    // &r32, &r33, &r34, &r35, &r36, &r37, &r38, &r39, &r40, &r41, &r42, &r43, &r44, &r45
+    std::vector<AbstractRanker *> rankers{&r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13, &r14, &r15, &r16, &r17, &r18, &r19, &r20, &r21, &r22, &r23, &r24, &r25, &r26, &r27, &r28, &r29, &r30, &r31, &r32, &r33, &r34, &r35, &r36, &r37, &r38, &r39, &r40, &r41, &r42, &r43, &r44, &r45};
 
     try
     {
@@ -78,8 +84,6 @@ int main(int argc, char *argv[])
         }
         else if (argc == 2 && strcmp(argv[1], "-d") == 0)
         {
-            WordleSolver solver2(dictionary_fps[0], &r12);
-            std::cout << solver2.Guess() << std::endl;
             WordleSolver solver(dictionary_fps[0], &r22, true);
             std::cout << "Evaluation result: " << Evaluate(solver, "parry") << std::endl;
         }
