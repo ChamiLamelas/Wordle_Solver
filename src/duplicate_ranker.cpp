@@ -5,7 +5,7 @@
 #include "duplicate_ranker.h"
 #include <unordered_set>
 
-DuplicateRanker::DuplicateRanker(AbstractRanker *r, int dp) : DuplicateRanker("DuplicateRanker(" + r->GetName() + "," + std::to_string(dp) + ")", r, dp, 7) {}
+DuplicateRanker::DuplicateRanker(AbstractRanker *r, int dp) : DuplicateRanker(r, dp, 7) {}
 DuplicateRanker::DuplicateRanker(AbstractRanker *r, int dp, unsigned short ng) : DuplicateRanker("DuplicateRanker(" + r->GetName() + "," + std::to_string(dp) + "," + std::to_string(ng) + ")", r, dp, ng) {}
 DuplicateRanker::DuplicateRanker(std::string_view name, AbstractRanker *r, int dp) : DuplicateRanker(name, r, dp, 7) {}
 DuplicateRanker::DuplicateRanker(std::string_view name, AbstractRanker *r, int dp, unsigned short ng) : AbstractRanker(name), ranker(r), duplicate_penalty(dp), num_guesses(ng) {}
