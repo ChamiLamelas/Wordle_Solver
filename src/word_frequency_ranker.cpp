@@ -6,6 +6,7 @@
 #include <fstream>
 #include "misc.h"
 #include <limits>
+#include <algorithm>
 
 WordFrequencyRanker::WordFrequencyRanker(AbstractRanker *r, const std::string &freq_fp) : WordFrequencyRanker("WordFrequencyRanker(" + r->GetName() + ",\"" + freq_fp + "\")", r, freq_fp) {}
 WordFrequencyRanker::WordFrequencyRanker(std::string_view name, AbstractRanker *r, const std::string &freq_fp) : AbstractRanker(name), ranker(r)
@@ -60,4 +61,20 @@ std::string WordFrequencyRanker::GetDebugInfo() const
     }
 
     return debug_info + "\n" + ranker->GetDebugInfo();
+}
+
+ProgressWordFrequencyRanker::ProgressWordFrequencyRanker(AbstractRanker *r, const std::string &freq_fp) : ProgressWordFrequencyRanker(r, freq_fp, 6) {}
+ProgressWordFrequencyRanker::ProgressWordFrequencyRanker(AbstractRanker *r, const std::string &freq_fp, unsigned short nf) : ProgressWordFrequencyRanker("ProgressWordFrequencyRanker(" + r->GetName() + ",\"" + freq_fp + "\"," + std::to_string(nf) + ")", r, freq_fp, nf) {}
+ProgressWordFrequencyRanker::ProgressWordFrequencyRanker(std::string_view name, AbstractRanker *r, const std::string &freq_fp) : ProgressWordFrequencyRanker(name, r, freq_fp, 6) {}
+ProgressWordFrequencyRanker::ProgressWordFrequencyRanker(std::string_view name, AbstractRanker *r, const std::string &freq_fp, unsigned short nf) : WordFrequencyRanker(name, r, freq_fp), num_found(nf) {}
+
+void ProgressWordFrequencyRanker::SetUp(const std::string &eligible_fp, unsigned short guess, std::string_view feedback)
+{
+    curr_found = feedback.size() - std::count(feedback.cbegin(), feedback.cend(), 'b');
+    WordFrequencyRanker::SetUp(eligible_fp, guess, feedback);
+}
+
+int ProgressWordFrequencyRanker::Rank(std::string_view word) const
+{
+    return (curr_found >= num_found) ? WordFrequencyRanker::Rank(word) : ranker->Rank(word);
 }
