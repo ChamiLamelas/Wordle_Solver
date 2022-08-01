@@ -146,7 +146,7 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
     words_file.close();
 
     // Write titles to output file
-    output_file << "Dictionary,Ranker,Mean,SD,Failure Rate (%)" << std::endl;
+    output_file << "Dictionary\tRanker\tMean\tSD\tFailure Rate (%)" << std::endl;
 
     // 6 decimals shown with all output (including integers stored in floats)
     output_file << std::fixed;
@@ -177,7 +177,7 @@ void GridEvaluate(const std::vector<std::string> &dictionary_fps, const std::vec
 
             // Compute statistics and write to output file
             GetStatistics(guess_counts, mean, std_dev, fail_count);
-            output_file << *dfp_itr << "," << (*rkr_itr)->GetName() << "," << mean << "," << std_dev << "," << (100.0 * fail_count) / words.size() << std::endl;
+            output_file << *dfp_itr << "\t" << (*rkr_itr)->GetName() << "\t" << mean << "\t" << std_dev << "\t" << (100.0 * fail_count) / words.size() << std::endl;
             std::cout << "Finished Evaluation of Dictionary [" << *dfp_itr << "] Ranker [" << (*rkr_itr)->GetName() << "]" << std::endl;
         }
     }

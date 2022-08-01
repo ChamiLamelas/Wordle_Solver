@@ -70,11 +70,23 @@ int main(int argc, char *argv[])
     VowelRanker r43(&r41, 100);
     VowelRanker r44(&r41, 100, 2);
     WordFrequencyRanker r45(&r41, freq_fp);
+    ProgressDuplicateRanker r46(&r2, 100);
+    ProgressDuplicateRanker r47(&r3, 100);
+    ProgressDuplicateRanker r48(&r4, 100);
+    ProgressDuplicateRanker r49(&r2, 100, 3);
+    ProgressDuplicateRanker r50(&r3, 100, 3);
+    ProgressDuplicateRanker r51(&r4, 100, 3);
+    ProgressDuplicateRanker r52(&r2, 100, 4);
+    ProgressDuplicateRanker r53(&r3, 100, 4);
+    ProgressDuplicateRanker r54(&r4, 100, 4);
+    ProgressDuplicateRanker r55(&r14, 100);
+    ProgressDuplicateRanker r56(&r14, 100, 3);
+    ProgressDuplicateRanker r57(&r14, 100, 4);
 
     std::vector<std::string> dictionary_fps{"data/dracos_github_words.txt", "data/medium_wordle_words_todate.txt"};
     // &r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13, &r14, &r15, &r16, &r17, &r18, &r19, &r20, &r21, &r22, &r23, &r24, &r25, &r26, &r27, &r28, &r29, &r30, &r31
-    // &r32, &r33, &r34, &r35, &r36, &r37, &r38, &r39, &r40, &r41, &r42, &r43, &r44, &r45
-    std::vector<AbstractRanker *> rankers{&r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13, &r14, &r15, &r16, &r17, &r18, &r19, &r20, &r21, &r22, &r23, &r24, &r25, &r26, &r27, &r28, &r29, &r30, &r31, &r32, &r33, &r34, &r35, &r36, &r37, &r38, &r39, &r40, &r41, &r42, &r43, &r44, &r45};
+    // &r32, &r33, &r34, &r35, &r36, &r37, &r38, &r39, &r40, &r41, &r42, &r43, &r44, &r45, &r46, &r47, &r48, &r49, &r50, &r51, &r52, &r53, &r54, &r55, &r56, &r57
+    std::vector<AbstractRanker *> rankers{&r1, &r2, &r3, &r4, &r5, &r6, &r7, &r8, &r9, &r10, &r11, &r12, &r13, &r14, &r15, &r16, &r17, &r18, &r19, &r20, &r21, &r22, &r23, &r24, &r25, &r26, &r27, &r28, &r29, &r30, &r31, &r32, &r33, &r34, &r35, &r36, &r37, &r38, &r39, &r40, &r41, &r42, &r43, &r44, &r45, &r46, &r47, &r48, &r49, &r50, &r51, &r52, &r53, &r54, &r55, &r56, &r57};
 
     try
     {

@@ -68,7 +68,7 @@ Builds and evaluates a collection of WordleSolvers on a list of words.
 
 For each dictionary filepath and ranking scheme, a WordleSolver is created and evaluated
 on a list of words using Evaluate(). Statistics from the evaluation are calculated using
-GetStatistics() and then are written to a CSV file.
+GetStatistics() and then are written to a TSV file.
 
 Parameters:
     dictionary_fps: Container of dictionary filepaths. Will be cutoff in output file if
