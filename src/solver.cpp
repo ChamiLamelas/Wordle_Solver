@@ -280,29 +280,6 @@ public:
         log_file << message << std::endl;
         log_file.close();
     }
-
-    static void AutoDebugLogEligibleWords(WordleSolver &self)
-    {
-        std::ofstream log_file;
-        log_file.open(self.debug_log_fp, std::ios_base::app);
-        if (!log_file.is_open())
-        {
-            throw WordleSolverException("Could not open log file for logging eligible words");
-        }
-        std::ifstream eligible_file(self.eligible_fp, std::ios_base::in);
-        if (!eligible_file.is_open())
-        {
-            throw WordleSolverException("Could not open " + self.eligible_fp + " for reading");
-        }
-        log_file << "\nEligible words: " << std::endl;
-        std::string word;
-        while (eligible_file.good())
-        {
-            std::getline(eligible_file, word);
-            log_file << word << std::endl;
-        }
-        log_file.close();
-    }
 };
 
 // Feedback could never be "", also see: https://stackoverflow.com/a/2605559
@@ -322,7 +299,7 @@ WordleSolver::WordleSolver(std::string_view d_fp, AbstractRanker *r, bool dm) : 
         auto t{std::time(nullptr)};
         auto tm{std::localtime(&t)};
         std::ostringstream oss;
-        oss << std::put_time(tm, "%d-%m-%Y_%H-%M-%S");
+        oss << std::put_time(tm, "%m-%d-%Y_%H-%M-%S");
         auto suffix{"-" + oss.str() + WordleSolver::LOG_FP_SUFFIX};
         debug_log_fp = InsertFilePathSuffix(dictionary_fp, suffix);
     }
@@ -384,6 +361,12 @@ std::string WordleSolver::Guess(std::string_view feedback)
     while (eligible_file.good())
     {
         std::getline(eligible_file, word);
+        if (word.empty())
+        {
+            // Empty word means we have an empty file (because empty file will have 1 empty line)
+            break;
+        }
+
         current_rank = ranker->Rank(word);
         if (debug_mode)
         {
@@ -402,6 +385,7 @@ std::string WordleSolver::Guess(std::string_view feedback)
     {
         throw WordleSolverException("Unable to make guess - no eligible words");
     }
+
 
     // Mark we have made guess and store guess to make future guesses
     num_guesses++;
