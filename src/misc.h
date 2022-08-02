@@ -89,6 +89,13 @@ template <typename KeyType>
 void CountsToRanks(const std::unordered_map<KeyType, size_t> &counts, std::unordered_map<KeyType, int> &ranks, std::vector<KeyType> &keys)
 {
     keys.clear();
+    ranks.clear();
+
+    if (counts.size() == 0)
+    {
+        return;
+    }
+
     for (const auto &s : counts)
     {
         keys.push_back(s.first);
@@ -100,7 +107,6 @@ void CountsToRanks(const std::unordered_map<KeyType, size_t> &counts, std::unord
     std::sort(keys.begin(), keys.end(), [&counts](const KeyType &key1, const KeyType &key2)
               { return counts.find(key1)->second > counts.find(key2)->second; });
 
-    ranks.clear();
     int curr_rank{1};
     auto curr_score{counts.find(keys[0])->second};
     for (const auto &k : keys)
