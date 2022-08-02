@@ -51,7 +51,7 @@ The dictionary also has a large impact, as seen when using the evaluation set as
 
 ## Further Development
 
-One can easily add additional ranking schemes provided with the `AbstractRanker` abstract data type defined [here](src/ranker.h) and test them either via user mode or via the evaluation header in `main.cpp`. One could also add additional evaluation metrics.
+One can easily add additional ranking schemes provided with the `AbstractRanker` abstract data type defined [here](src/ranker.h) and test them either via user mode or via the evaluation header in `main.cpp`. One could also add additional evaluation metrics. The user mode could also be greatly improved as it was not the focus to allow for specification of different ranking schemes or dictionaries via command line arguments. 
 
 ## Additional Information
 
