@@ -105,14 +105,19 @@ void SubstringRanker::SetUp(const std::string &eligible_fp, unsigned short guess
     // Stores the unique n letter substrings in word
     std::unordered_set<std::string> unique_substrs;
 
+    // Used to prevent size_t(0) bug
+    auto itr_offset{substring_len-1};
+
     // Read over each substring in each eligible word and increase its count after resetting word_counts.
     word_counts.clear();
     while (eligible_file.good())
     {
         std::getline(eligible_file, word);
-        for (auto i{0}; i < word.size() - (substring_len - 1); i++)
+        // For n=2, goes 1,2,...4
+        for (auto i{itr_offset}; i < word.size(); i++)
         {
-            auto substr{word.substr(i, substring_len)};
+            // Substr is 1-1=0 to 1 inclusive for n=2
+            auto substr{word.substr(i - itr_offset, substring_len)};
             if (unique_substrs.find(substr) == unique_substrs.end())
             {
                 word_counts[substr]++;
