@@ -49,6 +49,16 @@ std::string ReadFeedback()
     return feedback;
 }
 
+bool KeepGoing()
+{
+    std::string choice;
+    std::cout << "Would you like to keep going (enter y or yes)? ";
+    std::getline(std::cin, choice);
+    Trim(choice);
+    Lower(choice);
+    return choice == "y" || choice == "yes";
+}
+
 void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker)
 {
     RunUserMode(dictionary_fp, ranker, false);
@@ -56,29 +66,46 @@ void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker)
 
 void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker, bool debug_mode)
 {
-    try
+    WordleSolver solver(dictionary_fp, ranker, debug_mode);
+    std::string guess;
+    std::string feedback;
+    do
     {
-        WordleSolver solver(dictionary_fp, ranker, debug_mode);
-        std::string guess;
-        std::string feedback;
-        for (auto num_attempts{0}; num_attempts < 6; num_attempts++)
+        try
         {
-            guess = (num_attempts == 0) ? solver.Guess() : solver.Guess(feedback);
-            std::cout << "Guess: " << guess << std::endl;
-            feedback = ReadFeedback();
+            unsigned short num_attempts{0};
+            do
+            {
+                guess = (num_attempts == 0) ? solver.Guess() : solver.Guess(feedback);
+                std::cout << "Guess: " << guess << std::endl;
+                feedback = ReadFeedback();
+                num_attempts++;
+            } while (num_attempts < 6 && feedback != "ggggg");
+
             if (feedback == "ggggg")
             {
-                std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts + 1 << " attempts." << std::endl;
-                system("pause");
-                return;
+                std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts << " attempts." << std::endl;
+            }
+            else
+            {
+                std::cout << "Solver failed to guess in 6 attempts." << std::endl;
             }
         }
-    }
-    catch (const WordleSolverException &e)
-    {
-        std::cout << "Guess failure: " << e.what() << std::endl;
-    }
+        catch (const WordleSolverException &e)
+        {
+            std::cout << "Guess failure: " << e.what() << std::endl;
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Unexpected exception: " << e.what() << std::endl;
+        }
+        catch (const std::string &s)
+        {
+            std::cout << "Unexpected throw: " << s << std::endl;
+        }
+        catch (...) {
+            std::cout << "An unexpected problem occurred (no further information) - most likely a seg fault." << std::endl;
+        }
 
-    std::cout << "Solver failed to guess the word." << std::endl;
-    system("pause");
+    } while (KeepGoing());
 }
