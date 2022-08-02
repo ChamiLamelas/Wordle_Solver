@@ -45,7 +45,9 @@ std::string GetFeedback(std::string_view guess, std::string_view word)
         // there is an instance of it that has not been found elsewhere
         // in word, mark feedback yellow and decrement that current
         // guess character accounts for one of missing instances of
-        // it in the word
+        // it in the word - this ensures that if we duplicate a needed
+        // letter, it won't mark them both yellow. Example: guess "erect"
+        // for solution "runes". We want the feedback to be yybbb.
         if (*gitr != word[idx] && counts[*gitr] > 0)
         {
             counts[*gitr]--;

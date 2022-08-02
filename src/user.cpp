@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include "solver.h"
+#include "misc.h"
 
 // Removes whitespaces from both ends of a string in place
 void Trim(std::string &s)
@@ -55,19 +56,29 @@ void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker)
 
 void RunUserMode(std::string_view dictionary_fp, AbstractRanker *ranker, bool debug_mode)
 {
-    WordleSolver solver(dictionary_fp, ranker, debug_mode);
-    std::string guess;
-    std::string feedback;
-    for (auto num_attempts{0}; num_attempts < 6; num_attempts++)
+    try
     {
-        guess = (num_attempts == 0) ? solver.Guess() : solver.Guess(feedback);
-        std::cout << "Guess: " << guess << std::endl;
-        feedback = ReadFeedback();
-        if (feedback == "ggggg")
+        WordleSolver solver(dictionary_fp, ranker, debug_mode);
+        std::string guess;
+        std::string feedback;
+        for (auto num_attempts{0}; num_attempts < 6; num_attempts++)
         {
-            std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts + 1 << " attempts." << std::endl;
-            return;
+            guess = (num_attempts == 0) ? solver.Guess() : solver.Guess(feedback);
+            std::cout << "Guess: " << guess << std::endl;
+            feedback = ReadFeedback();
+            if (feedback == "ggggg")
+            {
+                std::cout << "Solver guessed \"" << guess << "\" in " << num_attempts + 1 << " attempts." << std::endl;
+                system("pause");
+                return;
+            }
         }
     }
+    catch (const WordleSolverException &e)
+    {
+        std::cout << "Guess failure: " << e.what() << std::endl;
+    }
+
     std::cout << "Solver failed to guess the word." << std::endl;
+    system("pause");
 }
