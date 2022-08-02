@@ -34,7 +34,7 @@ The ranking schemes I started with were:
 * Words are ranked based on the letters at their positions.
 * A combination of the previous 3.
 
-Of these, the last 2 performed the best on their own. For more information, see the starting_rankers sheet [here](workbook.xlsx). We then built 3 new ranking schemes that made use of these. These modified rank based on the presence of duplicates, consonants, and the word popularity. The effect of these modifications is discussed below, more details can be found in the sheets of [workbook.xlsx](workbook.xlsx). One good ranker based on these results can be found in the selected_rankers sheet [here](workbook.xlsx).
+I evaluated them using the first 300 Wordle words. Of these schemes, the last 2 performed the best on their own. For more information, see the starting_rankers sheet [here](data/workbook.xlsx). We then built 3 new ranking schemes that made use of these. These modified rank based on the presence of duplicates, consonants, and the word popularity. The effect of these modifications is discussed below, more details can be found in the sheets of [workbook.xlsx](data/workbook.xlsx). One good ranker based on these results can be found in the selected_rankers sheet [here](data/workbook.xlsx).
 
 ### Effects of Penalizing Duplicates
 
@@ -47,6 +47,8 @@ For all 5 ranking schemes described above, incorporating a penalty on consonants
 ### Effects of Word Popularity
 
 For ranking based on the frequency of contained letters, the effect of word popularity should be incorporated after getting around 4 characters right but doing so earlier also performs well. For the other four ranking schemes, the effect of word popularity being incorporated throughout the guessing process (despite having such a large weighting on the computed ranks) performs the best. For all 5 ranking schemes, incorporating word popularity in anyway yields an improvement.
+
+The dictionary also has a large impact, as seen when using the evaluation set as the dictionary, the performance of the rankers greatly improve. To see all experimental results, see [medium_wordle_words_todate-output_all.txt](data/medium_wordle_words_todate-output_all.txt). 
 
 ## Further Development
 
