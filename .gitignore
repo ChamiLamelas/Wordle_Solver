@@ -4,6 +4,8 @@
 *.drawio
 test.cpp
 *-log.txt
+for_pop/
+*.zip
 
 # Prerequisites
 *.d
