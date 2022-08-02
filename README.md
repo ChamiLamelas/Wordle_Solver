@@ -23,7 +23,7 @@ Follow the instructions in the following three sections [here](https://github.co
 
 ## Running
 
-Once this has been done, pressing Ctrl+Shift+B builds `wordle_solver.exe` which can be run. 
+Once this has been done, pressing Ctrl+Shift+B builds `wordle_solver.exe` which can be run. Running `wordle_solver.exe` will allow a user to solve the online Wordle game with the solver (see [here](src/user.h) for more information). To set up evaluation experiments and do debugging, you can use `-e` and `-d` command line arguments respectively.
 
 ## Results
 
@@ -33,7 +33,7 @@ The ranking schemes I started with were:
 * Words are ranked based on the letters at their positions (see [PositionRanker](src/position_ranker.h)).
 * A combination of the previous 3 (see [CombinedRanker](src/combined_ranker.h)).
 
-I evaluated them using the first 300 Wordle words. Of these schemes, the last 2 performed the best on their own. For more information, see the starting_rankers sheet [here](data/workbook.xlsx). We then built 3 new ranking schemes that made use of these. These modified rank based on the presence of duplicates, consonants, and the word popularity. The effect of these modifications is discussed below, more details can be found in the sheets of [workbook.xlsx](data/workbook.xlsx). One good ranker based on these results can be found in the selected_rankers sheet [here](data/workbook.xlsx).
+I evaluated them using the first 300 Wordle words (see evaluation details [here](src/evaluation.h)). Of these schemes, the last 2 performed the best on their own. For more information, see the starting_rankers sheet [here](data/workbook.xlsx). We then built 3 new ranking schemes that made use of these. These modified rank based on the presence of duplicates, consonants, and the word popularity. The effect of these modifications is discussed below, more details can be found in the sheets of [workbook.xlsx](data/workbook.xlsx). One good ranker based on these results can be found in the selected_rankers sheet [here](data/workbook.xlsx).
 
 ### Effects of Penalizing Duplicates
 
