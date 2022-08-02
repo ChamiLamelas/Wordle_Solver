@@ -13,7 +13,7 @@ Date: Summer 2022
 #include "position_ranker.h"
 
 /*
-This class defines a ranking scheme based on a weighted average of others.
+This class defines a ranking scheme based on a sum of others.
 
 This ranker works using a LetterRanker, a SubstringRanker with n = 2, a
 SubstringRanker with n = 3, and a PositionRanker.
@@ -23,21 +23,8 @@ class CombinedRanker : public AbstractRanker
 public:
     /*
     Constructs a CombinedRanker.
-
-    Each used ranker will have an equal weighting.
     */
     CombinedRanker();
-
-    /*
-    Overloaded constructor that allows one to assign weights to the 4 used rankers.
-
-    Parameters:
-        lw: Weight of LetterRanker
-        l2w: Weight of SubstringRanker with n=2
-        l3w: Weight of SubstringRanker with n=3
-        pw: Weight of PositionRanker
-    */
-    CombinedRanker(double lw, double l2w, double l3w, double pw);
 
     /*
     Overloaded version of CombinedRanker() that allows name specification.
@@ -46,18 +33,6 @@ public:
         name: Name for the ranker
     */
     CombinedRanker(std::string_view name);
-
-    /*
-    Overloaded version of CombinedRanker(double,double,double,double) that allows name specification.
-
-    Parameters:
-        name: Name for the ranker
-        lw: Weight of LetterRanker
-        l2w: Weight of SubstringRanker with n=2
-        l3w: Weight of SubstringRanker with n=3
-        pw: Weight of PositionRanker
-    */
-    CombinedRanker(std::string_view name, double lw, double l2w, double l3w, double pw);
 
     /*
     Sets up a CombinedRanker to rank based on the currently eligible words.
@@ -97,12 +72,6 @@ private:
     SubstringRanker two_letter_ranker{2};
     SubstringRanker three_letter_ranker{3};
     PositionRanker position_ranker;
-
-    // Weights for above rankers
-    double letter_weight;
-    double two_letter_weight;
-    double three_letter_weight;
-    double position_weight;
 };
 
 #endif
