@@ -53,6 +53,8 @@ The dictionary also has a large impact, as seen when using the evaluation set as
 
 One can easily add additional ranking schemes provided with the `AbstractRanker` abstract data type defined [here](src/ranker.h) and test them either via user mode or via the evaluation header in `main.cpp`. One could also add additional evaluation metrics.
 
+This solver works to solve Wordle in hard mode where any revealed hints must be used in subsequent guesses. However, one could look into creating a solver that uses other words that do not incorporate all of the hints that may yield more information gain.
+
 ## Additional Information
 
 Please see [the UML diagram](uml_diagram.png) and the documentation in header and implementation files.
